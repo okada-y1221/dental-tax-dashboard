@@ -334,7 +334,11 @@ const DentalTaxDashboard = () => {
                 <BarChart data={editMode ? tempData.monthlyData : data.monthlyData}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
                   <XAxis dataKey="month" tick={{ fill: '#64748b' }} />
-                  <YAxis tick={{ fill: '#64748b' }} />
+                  <YAxis 
+  tick={{ fill: '#64748b', fontSize: 11 }}
+  tickFormatter={(value) => `${(value / 10000).toFixed(0)}万`}
+  width={60}
+/>
                   <Tooltip 
                     contentStyle={{ backgroundColor: '#1e293b', border: 'none', borderRadius: '8px', color: '#fff' }}
                     formatter={(value) => formatCurrency(value)}
