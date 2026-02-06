@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { LineChart, Line, BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { LineChart, Line, BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, ComposedChart } from 'recharts';
 import { TrendingUp, TrendingDown, AlertTriangle, Edit3, Save, X, Calendar, Bell, Home, FileText, DollarSign, Users, Settings, HelpCircle, LogOut } from 'lucide-react';
 
 const DentalTaxDashboard = () => {
@@ -330,15 +330,14 @@ const DentalTaxDashboard = () => {
             <div className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition border border-slate-200">
               <h3 className="text-xl font-semibold text-slate-800 mb-4">月次推移 (直近12ヶ月)</h3>
               <ResponsiveContainer width="100%" height={300}>
-  <ComposedChart data={currentData.monthlyData} margin={{ left: 20, right: 20 }}>
-                <BarChart data={editMode ? tempData.monthlyData : data.monthlyData}>
+                <ComposedChart data={editMode ? tempData.monthlyData : data.monthlyData} margin={{ left: 10, right: 10 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
                   <XAxis dataKey="month" tick={{ fill: '#64748b' }} />
                   <YAxis 
-  tick={{ fill: '#64748b', fontSize: 11 }}
-  tickFormatter={(value) => `${(value / 10000).toFixed(0)}万`}
-  width={60}
-/>
+                    tick={{ fill: '#64748b', fontSize: 11 }}
+                    tickFormatter={(value) => `${(value / 10000).toFixed(0)}万`}
+                    width={60}
+                  />
                   <Tooltip 
                     contentStyle={{ backgroundColor: '#1e293b', border: 'none', borderRadius: '8px', color: '#fff' }}
                     formatter={(value) => formatCurrency(value)}
@@ -347,7 +346,7 @@ const DentalTaxDashboard = () => {
                   <Bar dataKey="revenue" fill="#3b82f6" name="売上(保険/自費)" radius={[8, 8, 0, 0]} />
                   <Bar dataKey="expenses" fill="#f59e0b" name="経費" radius={[8, 8, 0, 0]} />
                   <Line type="monotone" dataKey="profit" stroke="#10b981" strokeWidth={3} name="利益" />
-                </BarChart>
+                </ComposedChart>
               </ResponsiveContainer>
             </div>
 
