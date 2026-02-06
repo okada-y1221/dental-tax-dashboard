@@ -330,6 +330,7 @@ const DentalTaxDashboard = () => {
             <div className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition border border-slate-200">
               <h3 className="text-xl font-semibold text-slate-800 mb-4">月次推移 (直近12ヶ月)</h3>
               <ResponsiveContainer width="100%" height={300}>
+  <ComposedChart data={currentData.monthlyData} margin={{ left: 20, right: 20 }}>
                 <BarChart data={editMode ? tempData.monthlyData : data.monthlyData}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
                   <XAxis dataKey="month" tick={{ fill: '#64748b' }} />
