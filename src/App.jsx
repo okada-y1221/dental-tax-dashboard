@@ -104,7 +104,7 @@ const DentalTaxDashboard = () => {
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
       {/* Header */}
       <header className="bg-gradient-to-r from-slate-800 to-blue-900 text-white shadow-lg">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+        <div className="px-6 py-4 flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <div className="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center">
               <FileText className="w-6 h-6" />
@@ -345,7 +345,6 @@ const DentalTaxDashboard = () => {
                   <Legend />
                   <Bar dataKey="revenue" fill="#3b82f6" name="売上(保険/自費)" radius={[8, 8, 0, 0]} />
                   <Bar dataKey="expenses" fill="#f59e0b" name="経費" radius={[8, 8, 0, 0]} />
-                  <Line type="monotone" dataKey="profit" stroke="#10b981" strokeWidth={3} name="利益" />
                 </ComposedChart>
               </ResponsiveContainer>
             </div>
