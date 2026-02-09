@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { LineChart, Line, BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, ComposedChart } from 'recharts';
-import { TrendingUp, TrendingDown, AlertTriangle, Edit3, Save, X, Calendar, Bell, Home, FileText, DollarSign, Users, Settings, HelpCircle, LogOut } from 'lucide-react';
+import { TrendingUp, TrendingDown, AlertTriangle, Edit3, Save, X, Calendar, Bell, Home, FileText, DollarSign, Users, Settings, HelpCircle, LogOut, Menu } from 'lucide-react';
 
 const DentalTaxDashboard = () => {
   const [editMode, setEditMode] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [data, setData] = useState({
     currentMonth: {
       revenue: 8500000,
@@ -86,7 +87,7 @@ const DentalTaxDashboard = () => {
 
   const EditableNumber = ({ value, onChange, label }) => {
     if (!editMode) {
-      return <span className="text-3xl font-bold">{formatCurrency(value)}</span>;
+      return <span className="text-2xl sm:text-3xl font-bold">{formatCurrency(value)}</span>;
     }
     
     return (
@@ -94,7 +95,7 @@ const DentalTaxDashboard = () => {
         type="number"
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="text-3xl font-bold bg-white border-2 border-blue-400 rounded px-3 py-1 w-full"
+        className="text-2xl sm:text-3xl font-bold bg-white border-2 border-blue-400 rounded px-2 sm:px-3 py-1 w-full"
         placeholder={label}
       />
     );
@@ -103,40 +104,81 @@ const DentalTaxDashboard = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
       {/* Header */}
-      <header className="bg-gradient-to-r from-slate-800 to-blue-900 text-white shadow-lg">
-        <div className="px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center">
-              <FileText className="w-6 h-6" />
+      <header className="bg-gradient-to-r from-slate-800 to-blue-900 text-white shadow-lg sticky top-0 z-50">
+        <div className="px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between">
+          {/* Mobile Menu Button */}
+          <button 
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="lg:hidden p-2 hover:bg-slate-700/50 rounded-lg transition"
+          >
+            <Menu className="w-6 h-6" />
+          </button>
+
+          <div className="flex items-center space-x-2 sm:space-x-3">
+            <div className="w-8 h-8 sm:w-10 sm:h-10 bg-blue-500 rounded-lg flex items-center justify-center">
+              <FileText className="w-5 h-5 sm:w-6 sm:h-6" />
             </div>
-            <h1 className="text-2xl font-bold tracking-tight">医療DX × Bluetax For Dental</h1>
+            <h1 className="text-sm sm:text-xl lg:text-2xl font-bold tracking-tight">医療DX × Bluetax</h1>
           </div>
-          <div className="flex items-center space-x-6">
-            <div className="flex items-center space-x-2 bg-slate-700/50 px-4 py-2 rounded-lg">
-              <Calendar className="w-5 h-5" />
-              <span className="font-medium">2025年11月</span>
+
+          <div className="flex items-center space-x-2 sm:space-x-4 lg:space-x-6">
+            {/* Date - Hidden on mobile */}
+            <div className="hidden sm:flex items-center space-x-2 bg-slate-700/50 px-3 py-2 rounded-lg">
+              <Calendar className="w-4 h-4 sm:w-5 sm:h-5" />
+              <span className="text-sm font-medium">2025年11月</span>
             </div>
+
+            {/* Notifications */}
             <button className="relative p-2 hover:bg-slate-700/50 rounded-lg transition">
-              <Bell className="w-6 h-6" />
-              <span className="absolute top-0 right-0 w-3 h-3 bg-red-500 rounded-full"></span>
+              <Bell className="w-5 h-5 sm:w-6 sm:h-6" />
+              <span className="absolute top-0 right-0 w-2 h-2 sm:w-3 sm:h-3 bg-red-500 rounded-full"></span>
             </button>
-            <div className="flex items-center space-x-3 bg-slate-700/50 px-4 py-2 rounded-lg cursor-pointer hover:bg-slate-700 transition">
-              <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center font-bold">
+
+            {/* User Profile - Simplified on mobile */}
+            <div className="hidden sm:flex items-center space-x-3 bg-slate-700/50 px-3 sm:px-4 py-2 rounded-lg cursor-pointer hover:bg-slate-700 transition">
+              <div className="w-8 h-8 sm:w-10 sm:h-10 bg-blue-500 rounded-full flex items-center justify-center font-bold text-sm">
                 ○○
               </div>
-              <div className="text-left">
+              <div className="text-left hidden lg:block">
                 <div className="text-sm font-semibold">○○歯科クリニック</div>
                 <div className="text-xs text-slate-300">院長様</div>
               </div>
+            </div>
+            
+            {/* Mobile: Just avatar */}
+            <div className="sm:hidden w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center font-bold text-sm">
+              ○○
             </div>
           </div>
         </div>
       </header>
 
       {/* Sidebar */}
-      <div className="flex">
-        <aside className="w-64 bg-slate-800 min-h-screen text-white p-6">
-          <nav className="space-y-2">
+      <div className="flex relative">
+        {/* Mobile Overlay */}
+        {mobileMenuOpen && (
+          <div 
+            className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
+            onClick={() => setMobileMenuOpen(false)}
+          />
+        )}
+
+        {/* Sidebar */}
+        <aside className={`
+          fixed lg:static inset-y-0 left-0 z-50
+          w-64 bg-slate-800 min-h-screen text-white p-6
+          transform transition-transform duration-300 ease-in-out
+          ${mobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
+        `}>
+          {/* Close button for mobile */}
+          <button 
+            onClick={() => setMobileMenuOpen(false)}
+            className="lg:hidden absolute top-4 right-4 p-2 hover:bg-slate-700 rounded-lg"
+          >
+            <X className="w-5 h-5" />
+          </button>
+
+          <nav className="space-y-2 mt-12 lg:mt-0">
             <a href="#" className="flex items-center space-x-3 bg-slate-700 px-4 py-3 rounded-lg font-medium hover:bg-slate-600 transition">
               <Home className="w-5 h-5" />
               <span>ホーム</span>
@@ -176,32 +218,32 @@ const DentalTaxDashboard = () => {
         </aside>
 
         {/* Main Content */}
-        <main className="flex-1 p-8">
+        <main className="flex-1 p-4 sm:p-6 lg:p-8 w-full lg:w-auto">
           {/* Edit Mode Controls */}
-          <div className="mb-6 flex justify-between items-center">
-            <h2 className="text-3xl font-bold text-slate-800">全体サマリー</h2>
+          <div className="mb-4 sm:mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+            <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-slate-800">全体サマリー</h2>
             {!editMode ? (
               <button
                 onClick={handleEdit}
-                className="flex items-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition shadow-lg hover:shadow-xl"
+                className="flex items-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-medium transition shadow-lg hover:shadow-xl text-sm sm:text-base"
               >
-                <Edit3 className="w-5 h-5" />
+                <Edit3 className="w-4 h-4 sm:w-5 sm:h-5" />
                 <span>データ編集</span>
               </button>
             ) : (
-              <div className="flex space-x-3">
+              <div className="flex space-x-2 sm:space-x-3 w-full sm:w-auto">
                 <button
                   onClick={handleSave}
-                  className="flex items-center space-x-2 bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-medium transition"
+                  className="flex-1 sm:flex-initial flex items-center justify-center space-x-2 bg-green-600 hover:bg-green-700 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-medium transition text-sm sm:text-base"
                 >
-                  <Save className="w-5 h-5" />
+                  <Save className="w-4 h-4 sm:w-5 sm:h-5" />
                   <span>保存</span>
                 </button>
                 <button
                   onClick={handleCancel}
-                  className="flex items-center space-x-2 bg-slate-600 hover:bg-slate-700 text-white px-6 py-3 rounded-lg font-medium transition"
+                  className="flex-1 sm:flex-initial flex items-center justify-center space-x-2 bg-slate-600 hover:bg-slate-700 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-medium transition text-sm sm:text-base"
                 >
-                  <X className="w-5 h-5" />
+                  <X className="w-4 h-4 sm:w-5 sm:h-5" />
                   <span>キャンセル</span>
                 </button>
               </div>
@@ -209,17 +251,17 @@ const DentalTaxDashboard = () => {
           </div>
 
           {editMode && (
-            <div className="mb-6 bg-blue-50 border-l-4 border-blue-600 p-4 rounded-lg">
-              <p className="text-blue-900 font-medium">📝 編集モード: 数値をクリックして変更できます。完了したら「保存」をクリックしてください。</p>
+            <div className="mb-4 sm:mb-6 bg-blue-50 border-l-4 border-blue-600 p-3 sm:p-4 rounded-lg">
+              <p className="text-blue-900 font-medium text-sm sm:text-base">📝 編集モード: 数値をクリックして変更できます。完了したら「保存」をクリックしてください。</p>
             </div>
           )}
 
           {/* Top Summary Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
             {/* Current Month */}
-            <div className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition border border-slate-200">
-              <h3 className="text-lg font-semibold text-slate-700 mb-4">今月の経営速報 (11月度速報値)</h3>
-              <div className="space-y-4">
+            <div className="bg-white rounded-xl shadow-lg p-4 sm:p-6 hover:shadow-xl transition border border-slate-200">
+              <h3 className="text-base sm:text-lg font-semibold text-slate-700 mb-3 sm:mb-4">今月の経営速報 (11月度速報値)</h3>
+              <div className="space-y-3 sm:space-y-4">
                 <div>
                   <div className="text-sm text-slate-600 mb-1">売上</div>
                   <div className="flex items-center justify-between">
@@ -325,14 +367,14 @@ const DentalTaxDashboard = () => {
           </div>
 
           {/* Charts Section */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 mb-6 sm:mb-8">
             {/* Monthly Trend */}
-            <div className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition border border-slate-200">
-              <h3 className="text-xl font-semibold text-slate-800 mb-4">月次推移 (直近12ヶ月)</h3>
-              <ResponsiveContainer width="100%" height={300}>
+            <div className="bg-white rounded-xl shadow-lg p-4 sm:p-6 hover:shadow-xl transition border border-slate-200">
+              <h3 className="text-base sm:text-lg lg:text-xl font-semibold text-slate-800 mb-3 sm:mb-4">月次推移 (直近12ヶ月)</h3>
+              <ResponsiveContainer width="100%" height={250}>
                 <ComposedChart data={editMode ? tempData.monthlyData : data.monthlyData} margin={{ left: 10, right: 10 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
-                  <XAxis dataKey="month" tick={{ fill: '#64748b' }} />
+                  <XAxis dataKey="month" tick={{ fill: '#64748b', fontSize: 10 }} />
                   <YAxis 
                     tick={{ fill: '#64748b', fontSize: 11 }}
                     tickFormatter={(value) => `${(value / 10000).toFixed(0)}万`}
