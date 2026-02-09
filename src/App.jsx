@@ -87,7 +87,7 @@ const DentalTaxDashboard = () => {
 
   const EditableNumber = ({ value, onChange, label }) => {
     if (!editMode) {
-      return <span className="text-2xl sm:text-3xl font-bold">{formatCurrency(value)}</span>;
+      return <span className="text-lg sm:text-xl font-bold">{formatCurrency(value)}</span>;
     }
     
     return (
@@ -95,17 +95,17 @@ const DentalTaxDashboard = () => {
         type="number"
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="text-2xl sm:text-3xl font-bold bg-white border-2 border-blue-400 rounded px-2 sm:px-3 py-1 w-full"
+        className="text-lg sm:text-xl font-bold bg-white border-2 border-blue-400 rounded px-2 py-1 w-full"
         placeholder={label}
       />
     );
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 overflow-hidden">
       {/* Header */}
       <header className="bg-gradient-to-r from-slate-800 to-blue-900 text-white shadow-lg sticky top-0 z-50">
-        <div className="px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between">
+        <div className="px-4 sm:px-6 py-2 flex items-center justify-between">
           {/* Mobile Menu Button */}
           <button 
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -218,10 +218,10 @@ const DentalTaxDashboard = () => {
         </aside>
 
         {/* Main Content */}
-        <main className="flex-1 p-4 sm:p-6 lg:p-8 w-full lg:w-auto">
+        <main className="flex-1 p-2 sm:p-4 w-full lg:w-auto h-[calc(100vh-60px)] overflow-y-auto">
           {/* Edit Mode Controls */}
-          <div className="mb-4 sm:mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
-            <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-slate-800">全体サマリー</h2>
+          <div className="mb-2 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+            <h2 className="text-lg sm:text-xl font-bold text-slate-800">全体サマリー</h2>
             {!editMode ? (
               <button
                 onClick={handleEdit}
@@ -251,17 +251,17 @@ const DentalTaxDashboard = () => {
           </div>
 
           {editMode && (
-            <div className="mb-4 sm:mb-6 bg-blue-50 border-l-4 border-blue-600 p-3 sm:p-4 rounded-lg">
-              <p className="text-blue-900 font-medium text-sm sm:text-base">📝 編集モード: 数値をクリックして変更できます。完了したら「保存」をクリックしてください。</p>
+            <div className="mb-2 bg-blue-50 border-l-4 border-blue-600 p-2 rounded-lg">
+              <p className="text-blue-900 font-medium text-xs">📝 編集モード: 数値をクリックして変更できます</p>
             </div>
           )}
 
           {/* Top Summary Cards */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 mb-3">
             {/* Current Month */}
-            <div className="bg-white rounded-xl shadow-lg p-4 sm:p-6 hover:shadow-xl transition border border-slate-200">
-              <h3 className="text-base sm:text-lg font-semibold text-slate-700 mb-3 sm:mb-4">今月の経営速報 (11月度速報値)</h3>
-              <div className="space-y-3 sm:space-y-4">
+            <div className="bg-white rounded-lg shadow p-3 hover:shadow-lg transition border border-slate-200">
+              <h3 className="text-sm font-semibold text-slate-700 mb-2">今月の経営速報</h3>
+              <div className="space-y-2">
                 <div>
                   <div className="text-sm text-slate-600 mb-1">売上</div>
                   <div className="flex items-center justify-between">
@@ -367,11 +367,11 @@ const DentalTaxDashboard = () => {
           </div>
 
           {/* Charts Section */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 mb-6 sm:mb-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 mb-3">
             {/* Monthly Trend */}
-            <div className="bg-white rounded-xl shadow-lg p-4 sm:p-6 hover:shadow-xl transition border border-slate-200">
-              <h3 className="text-base sm:text-lg lg:text-xl font-semibold text-slate-800 mb-3 sm:mb-4">月次推移 (直近12ヶ月)</h3>
-              <ResponsiveContainer width="100%" height={250}>
+            <div className="bg-white rounded-lg shadow p-3 hover:shadow-lg transition border border-slate-200">
+              <h3 className="text-sm font-semibold text-slate-800 mb-2">月次推移 (直近12ヶ月)</h3>
+              <ResponsiveContainer width="100%" height={180}>
                 <ComposedChart data={editMode ? tempData.monthlyData : data.monthlyData} margin={{ left: 10, right: 10 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
                   <XAxis dataKey="month" tick={{ fill: '#64748b', fontSize: 10 }} />
@@ -434,19 +434,18 @@ const DentalTaxDashboard = () => {
           </div>
 
           {/* Bottom Section */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
             {/* Expense Breakdown */}
-            <div className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition border border-slate-200">
-              <h3 className="text-xl font-semibold text-slate-800 mb-4">経費分析</h3>
-              <h4 className="text-sm font-medium text-slate-600 mb-3">11月度 経費構成比</h4>
-              <ResponsiveContainer width="100%" height={200}>
+            <div className="bg-white rounded-lg shadow p-3 hover:shadow-lg transition border border-slate-200">
+              <h3 className="text-sm font-semibold text-slate-800 mb-2">経費分析</h3>
+              <ResponsiveContainer width="100%" height={140}>
                 <PieChart>
                   <Pie
                     data={editMode ? tempData.expenseBreakdown : data.expenseBreakdown}
                     cx="50%"
                     cy="50%"
-                    innerRadius={50}
-                    outerRadius={80}
+                    innerRadius={30}
+                    outerRadius={60}
                     paddingAngle={2}
                     dataKey="value"
                   >
@@ -471,34 +470,33 @@ const DentalTaxDashboard = () => {
             </div>
 
             {/* Action & Management */}
-            <div className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition border border-slate-200">
-              <h3 className="text-xl font-semibold text-slate-800 mb-4">アクション&管理</h3>
-              <div className="mb-6">
-                <h4 className="text-sm font-semibold text-slate-700 mb-3">やることリスト (To-Do)</h4>
-                <div className="space-y-3">
-                  <label className="flex items-center space-x-3 p-3 bg-slate-50 rounded-lg hover:bg-slate-100 transition cursor-pointer">
-                    <input type="checkbox" className="w-5 h-5 rounded border-slate-300" />
+            <div className="bg-white rounded-lg shadow p-3 hover:shadow-lg transition border border-slate-200">
+              <h3 className="text-sm font-semibold text-slate-800 mb-2">To-Do & アドバイス</h3>
+              <div className="mb-3">
+                <div className="space-y-2">
+                  <label className="flex items-center space-x-2 p-2 bg-slate-50 rounded hover:bg-slate-100 transition cursor-pointer">
+                    <input type="checkbox" className="w-4 h-4 rounded border-slate-300" />
                     <div className="flex-1">
-                      <div className="text-sm font-medium text-slate-800">未アップロード領収書あり (5件)</div>
+                      <div className="text-xs font-medium text-slate-800">未アップロード領収書 (5件)</div>
                     </div>
                   </label>
-                  <label className="flex items-center space-x-3 p-3 bg-slate-50 rounded-lg hover:bg-slate-100 transition cursor-pointer">
-                    <input type="checkbox" className="w-5 h-5 rounded border-slate-300" />
+                  <label className="flex items-center space-x-2 p-2 bg-slate-50 rounded hover:bg-slate-100 transition cursor-pointer">
+                    <input type="checkbox" className="w-4 h-4 rounded border-slate-300" />
                     <div className="flex-1">
-                      <div className="text-sm font-medium text-slate-800">給与データ確認期限 (あと2日)</div>
+                      <div className="text-xs font-medium text-slate-800">給与データ確認 (あと2日)</div>
                     </div>
                   </label>
-                  <label className="flex items-center space-x-3 p-3 bg-slate-50 rounded-lg hover:bg-slate-100 transition cursor-pointer">
-                    <input type="checkbox" className="w-5 h-5 rounded border-slate-300" />
+                  <label className="flex items-center space-x-2 p-2 bg-slate-50 rounded hover:bg-slate-100 transition cursor-pointer">
+                    <input type="checkbox" className="w-4 h-4 rounded border-slate-300" />
                     <div className="flex-1">
-                      <div className="text-sm font-medium text-slate-800">税理士からの質問に回答</div>
+                      <div className="text-xs font-medium text-slate-800">税理士からの質問に回答</div>
                     </div>
                   </label>
                 </div>
               </div>
               
               <div>
-                <h4 className="text-sm font-semibold text-slate-700 mb-3">税理士からのアドバイス</h4>
+                <h4 className="text-xs font-semibold text-slate-700 mb-2">税理士アドバイス</h4>
                 <div className="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-lg">
                   <div className="flex items-start space-x-3">
                     <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
@@ -514,28 +512,26 @@ const DentalTaxDashboard = () => {
             </div>
 
             {/* Equipment Investment */}
-            <div className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition border border-slate-200">
-              <h3 className="text-xl font-semibold text-slate-800 mb-4">設備投資計画 (シミュレーション)</h3>
-              <div className="space-y-4 mb-4">
-                <div className="p-3 bg-slate-50 rounded-lg">
-                  <div className="text-sm text-slate-600 mb-1">設定資金</div>
-                  <div className="text-lg font-bold text-slate-900">¥30,000</div>
-                  <div className="text-xs text-slate-500">ユニット2台</div>
+            <div className="bg-white rounded-lg shadow p-3 hover:shadow-lg transition border border-slate-200">
+              <h3 className="text-sm font-semibold text-slate-800 mb-2">設備投資計画</h3>
+              <div className="space-y-2 mb-2">
+                <div className="p-2 bg-slate-50 rounded">
+                  <div className="text-xs text-slate-600">ユニット2台</div>
+                  <div className="text-sm font-bold text-slate-900">¥30,000</div>
                 </div>
-                <div className="p-3 bg-slate-50 rounded-lg">
-                  <div className="text-sm text-slate-600 mb-1">予定期限</div>
-                  <div className="text-lg font-bold text-slate-900">¥2,000,000</div>
-                  <div className="text-xs text-slate-500">ユニット2台</div>
+                <div className="p-2 bg-slate-50 rounded">
+                  <div className="text-xs text-slate-600">予定期限</div>
+                  <div className="text-sm font-bold text-slate-900">¥2,000,000</div>
                 </div>
-                <div className="p-3 bg-slate-50 rounded-lg">
-                  <div className="text-sm text-slate-600 mb-1">CT</div>
-                  <div className="text-lg font-bold text-slate-900">¥1,800,000</div>
+                <div className="p-2 bg-slate-50 rounded">
+                  <div className="text-xs text-slate-600">CT</div>
+                  <div className="text-sm font-bold text-slate-900">¥1,800,000</div>
                 </div>
               </div>
               
               <div>
-                <h4 className="text-sm font-medium text-slate-600 mb-2">ローン返済シミュレーション</h4>
-                <ResponsiveContainer width="100%" height={150}>
+                <h4 className="text-xs font-medium text-slate-600 mb-1">ローン返済</h4>
+                <ResponsiveContainer width="100%" height={100}>
                   <BarChart data={[
                     { month: '1月', value: 10000 },
                     { month: '2月', value: 12000 },
