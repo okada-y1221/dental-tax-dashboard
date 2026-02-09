@@ -443,15 +443,25 @@ const DentalTaxDashboard = () => {
                       <ResponsiveContainer width="100%" height={180}>
                         <PieChart>
                           <Pie data={[
-                            { value: 2500000, fill: '#3b82f6' },
-                            { value: 1800000, fill: '#ef4444' },
-                            { value: 1200000, fill: '#10b981' },
-                            { value: 1800000, fill: '#f59e0b' },
-                            { value: 1000000, fill: '#8b5cf6' },
-                            { value: 900000, fill: '#ec4899' }
-                          ]} cx="50%" cy="50%" innerRadius={30} outerRadius={60} dataKey="value">
+                            { name: '材料費', value: 2500000, fill: '#3b82f6' },
+                            { name: '人件費', value: 1800000, fill: '#ef4444' },
+                            { name: '家賃・光熱費', value: 1200000, fill: '#10b981' },
+                            { name: '広告宣伝費', value: 1000000, fill: '#f59e0b' },
+                            { name: '技工費', value: 800000, fill: '#8b5cf6' },
+                            { name: 'その他', value: 800000, fill: '#ec4899' }
+                          ]} cx="50%" cy="50%" innerRadius={30} outerRadius={60} dataKey="value" label={false}>
+                            {[
+                              { name: '材料費', fill: '#3b82f6' },
+                              { name: '人件費', fill: '#ef4444' },
+                              { name: '家賃・光熱費', fill: '#10b981' },
+                              { name: '広告宣伝費', fill: '#f59e0b' },
+                              { name: '技工費', fill: '#8b5cf6' },
+                              { name: 'その他', fill: '#ec4899' }
+                            ].map((entry, index) => (
+                              <Cell key={`cell-${index}`} fill={entry.fill} />
+                            ))}
                           </Pie>
-                          <Tooltip formatter={(v) => formatCurrency(v)} />
+                          <Tooltip formatter={(value, name) => [formatCurrency(value), name]} contentStyle={{ fontSize: '10px' }} />
                         </PieChart>
                       </ResponsiveContainer>
                       
@@ -473,30 +483,30 @@ const DentalTaxDashboard = () => {
                         <div className="flex items-center justify-between">
                           <div className="flex items-center space-x-2">
                             <div className="w-3 h-3 rounded" style={{ backgroundColor: '#10b981' }}></div>
-                            <span>材料費</span>
+                            <span>家賃・光熱費</span>
                           </div>
                           <span className="font-semibold">¥1,200,000</span>
                         </div>
                         <div className="flex items-center justify-between">
                           <div className="flex items-center space-x-2">
                             <div className="w-3 h-3 rounded" style={{ backgroundColor: '#f59e0b' }}></div>
-                            <span>インプラント</span>
+                            <span>広告宣伝費</span>
                           </div>
-                          <span className="font-semibold">¥1,800,000</span>
+                          <span className="font-semibold">¥1,000,000</span>
                         </div>
                         <div className="flex items-center justify-between">
                           <div className="flex items-center space-x-2">
                             <div className="w-3 h-3 rounded" style={{ backgroundColor: '#8b5cf6' }}></div>
-                            <span>加工費</span>
+                            <span>技工費</span>
                           </div>
-                          <span className="font-semibold">¥1,000,000</span>
+                          <span className="font-semibold">¥800,000</span>
                         </div>
                         <div className="flex items-center justify-between">
                           <div className="flex items-center space-x-2">
                             <div className="w-3 h-3 rounded" style={{ backgroundColor: '#ec4899' }}></div>
                             <span>その他</span>
                           </div>
-                          <span className="font-semibold">¥900,000</span>
+                          <span className="font-semibold">¥800,000</span>
                         </div>
                       </div>
                     </div>
