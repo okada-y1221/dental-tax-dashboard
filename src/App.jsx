@@ -87,7 +87,7 @@ const DentalTaxDashboard = () => {
   };
 
   return (
-    <div className="flex h-screen bg-slate-50">
+    <div className="flex min-h-screen lg:h-screen bg-slate-50">
       {/* Sidebar with Hamburger Menu */}
       <aside className={`fixed lg:static inset-y-0 left-0 z-50 w-48 bg-slate-800 text-white flex flex-col transform transition-transform duration-300 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}>
         <div className="p-4 flex items-center space-x-2 border-b border-slate-700">
@@ -146,7 +146,7 @@ const DentalTaxDashboard = () => {
       )}
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col">
+      <div className="flex-1 flex flex-col min-h-screen lg:h-screen">
         {/* Header */}
         <header className="bg-gradient-to-r from-slate-700 to-blue-800 text-white px-6 py-3 flex items-center justify-between">
           <div className="flex items-center space-x-3">
@@ -196,11 +196,11 @@ const DentalTaxDashboard = () => {
         </header>
 
         {/* Content */}
-        <div className="flex-1 overflow-auto p-4">
-          <div className="h-full flex flex-col gap-4 lg:min-h-0">
+        <div className="flex-1 p-4 lg:overflow-auto">
+          <div className="flex flex-col gap-4 lg:h-full lg:min-h-0">
             
             {/* Top Row - 3 Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" style={{ height: 'auto', minHeight: '28%' }}>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:h-[28%]">
               
               {/* 今月の経営速報 */}
               <div className="bg-white rounded-lg shadow p-4">
@@ -305,10 +305,10 @@ const DentalTaxDashboard = () => {
             </div>
 
             {/* Bottom Row */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 flex-1 min-h-0">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:flex-1 lg:min-h-0">
               
               {/* Left - 経営分析 */}
-              <div className="lg:col-span-2 bg-slate-100 rounded-lg p-3 overflow-auto">
+              <div className="lg:col-span-2 bg-slate-100 rounded-lg p-3 lg:overflow-auto">
                 <h2 className="text-base font-bold text-slate-800 mb-3">経営分析</h2>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
@@ -525,7 +525,7 @@ const DentalTaxDashboard = () => {
               </div>
 
               {/* Right - アクション&管理 */}
-              <div className="bg-slate-100 rounded-lg p-3 overflow-auto">
+              <div className="bg-slate-100 rounded-lg p-3 lg:overflow-auto">
                 <h2 className="text-base font-bold text-slate-800 mb-3">アクション&管理</h2>
                 
                 <div className="bg-white rounded-lg shadow p-3 mb-3">
