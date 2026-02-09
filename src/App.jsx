@@ -4,7 +4,7 @@ import { TrendingUp, TrendingDown, AlertTriangle, Edit3, Save, X, Calendar, Bell
 
 const DentalTaxDashboard = () => {
   const [editMode, setEditMode] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [data, setData] = useState({
     currentMonth: {
       revenue: 8500000,
@@ -73,7 +73,7 @@ const DentalTaxDashboard = () => {
 
   const EditableNumber = ({ value, onChange }) => {
     if (!editMode) {
-      return <span className="text-sm font-bold">{formatCurrency(value)}</span>;
+      return <span className="text-xl font-bold">{formatCurrency(value)}</span>;
     }
     
     return (
@@ -81,275 +81,393 @@ const DentalTaxDashboard = () => {
         type="number"
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="text-sm font-bold bg-white border border-blue-400 rounded px-1 py-0.5 w-full"
+        className="text-xl font-bold bg-white border border-blue-400 rounded px-2 py-1 w-full"
       />
     );
   };
 
   return (
-    <div className="min-h-screen lg:h-screen bg-gradient-to-br from-slate-50 to-blue-50 lg:overflow-hidden flex flex-col">
-      {/* Compact Header */}
-      <header className="bg-gradient-to-r from-slate-800 to-blue-900 text-white shadow-lg">
-        <div className="px-3 py-1.5 flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <FileText className="w-5 h-5" />
-            <h1 className="text-sm font-bold">医療DX × Bluetax For Dental</h1>
+    <div className="flex h-screen bg-slate-50">
+      {/* Sidebar with Hamburger Menu */}
+      <aside className={`fixed lg:static inset-y-0 left-0 z-50 w-48 bg-slate-800 text-white flex flex-col transform transition-transform duration-300 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}>
+        <div className="p-4 flex items-center space-x-2 border-b border-slate-700">
+          <FileText className="w-6 h-6 text-blue-400" />
+          <div>
+            <div className="text-sm font-bold">医療DX ×</div>
+            <div className="text-xs">Bluetax For Dental</div>
           </div>
+        </div>
+        
+        <nav className="flex-1 p-3 space-y-1">
+          <a href="#" className="flex items-center space-x-2 bg-slate-700 px-3 py-2 rounded text-sm hover:bg-slate-600 transition">
+            <Home className="w-4 h-4" />
+            <span>ホーム</span>
+          </a>
+          <a href="#" className="flex items-center space-x-2 px-3 py-2 rounded text-sm hover:bg-slate-700 transition">
+            <FileText className="w-4 h-4" />
+            <span>取引登録</span>
+          </a>
+          <a href="#" className="flex items-center space-x-2 px-3 py-2 rounded text-sm hover:bg-slate-700 transition">
+            <FileText className="w-4 h-4" />
+            <span>帳簿・レポート</span>
+          </a>
+          <a href="#" className="flex items-center space-x-2 px-3 py-2 rounded text-sm hover:bg-slate-700 transition">
+            <DollarSign className="w-4 h-4" />
+            <span>決算・申告</span>
+          </a>
+          <a href="#" className="flex items-center space-x-2 px-3 py-2 rounded text-sm hover:bg-slate-700 transition">
+            <Users className="w-4 h-4" />
+            <span>人事・労務</span>
+          </a>
+        </nav>
+        
+        <div className="p-3 border-t border-slate-700 space-y-1">
+          <a href="#" className="flex items-center space-x-2 px-3 py-2 rounded text-sm hover:bg-slate-700 transition">
+            <Settings className="w-4 h-4" />
+            <span>設定</span>
+          </a>
+          <a href="#" className="flex items-center space-x-2 px-3 py-2 rounded text-sm hover:bg-slate-700 transition">
+            <HelpCircle className="w-4 h-4" />
+            <span>ヘルプ</span>
+          </a>
+          <a href="#" className="flex items-center space-x-2 px-3 py-2 rounded text-sm hover:bg-slate-700 transition">
+            <LogOut className="w-4 h-4" />
+            <span>ログアウト</span>
+          </a>
+        </div>
+      </aside>
+
+      {/* Overlay for mobile */}
+      {sidebarOpen && (
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
+          onClick={() => setSidebarOpen(false)}
+        ></div>
+      )}
+
+      {/* Main Content */}
+      <div className="flex-1 flex flex-col">
+        {/* Header */}
+        <header className="bg-gradient-to-r from-slate-700 to-blue-800 text-white px-6 py-3 flex items-center justify-between">
           <div className="flex items-center space-x-3">
-            <div className="flex items-center space-x-1 bg-slate-700/50 px-2 py-1 rounded text-xs">
-              <Calendar className="w-3 h-3" />
+            <button 
+              onClick={() => setSidebarOpen(!sidebarOpen)}
+              className="lg:hidden p-2 hover:bg-slate-600/50 rounded"
+            >
+              <Menu className="w-5 h-5" />
+            </button>
+            <h1 className="text-lg font-bold">全体サマリー</h1>
+          </div>
+          <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-2 bg-slate-600/50 px-3 py-1 rounded text-sm">
+              <Calendar className="w-4 h-4" />
               <span>2025年11月</span>
             </div>
-            <button className="relative p-1">
-              <Bell className="w-4 h-4" />
-              <span className="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
+            <button className="relative p-2 hover:bg-slate-600/50 rounded">
+              <Bell className="w-5 h-5" />
+              <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
             </button>
-            <div className="flex items-center space-x-2 bg-slate-700/50 px-2 py-1 rounded">
-              <div className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center text-xs font-bold">
+            <div className="flex items-center space-x-2 bg-slate-600/50 px-3 py-1 rounded">
+              <div className="w-7 h-7 bg-blue-500 rounded-full flex items-center justify-center text-xs font-bold">
                 ○○
               </div>
-              <div className="text-xs">○○歯科クリニック</div>
+              <div className="text-sm">
+                <div className="font-semibold">○○歯科クリニック</div>
+                <div className="text-xs text-slate-300">院長様</div>
+              </div>
             </div>
             {!editMode ? (
-              <button onClick={handleEdit} className="flex items-center space-x-1 bg-blue-600 hover:bg-blue-700 px-2 py-1 rounded text-xs">
-                <Edit3 className="w-3 h-3" />
+              <button onClick={handleEdit} className="flex items-center space-x-1 bg-blue-600 hover:bg-blue-700 px-3 py-1.5 rounded text-sm">
+                <Edit3 className="w-4 h-4" />
                 <span>編集</span>
               </button>
             ) : (
-              <div className="flex space-x-1">
-                <button onClick={handleSave} className="flex items-center space-x-1 bg-green-600 hover:bg-green-700 px-2 py-1 rounded text-xs">
-                  <Save className="w-3 h-3" />
+              <div className="flex space-x-2">
+                <button onClick={handleSave} className="flex items-center space-x-1 bg-green-600 hover:bg-green-700 px-3 py-1.5 rounded text-sm">
+                  <Save className="w-4 h-4" />
+                  <span>保存</span>
                 </button>
-                <button onClick={handleCancel} className="flex items-center space-x-1 bg-slate-600 hover:bg-slate-700 px-2 py-1 rounded text-xs">
-                  <X className="w-3 h-3" />
+                <button onClick={handleCancel} className="flex items-center space-x-1 bg-slate-600 hover:bg-slate-700 px-3 py-1.5 rounded text-sm">
+                  <X className="w-4 h-4" />
                 </button>
               </div>
             )}
           </div>
-        </div>
-      </header>
+        </header>
 
-      {/* Main Content - Fixed Height on Desktop, Scrollable on Mobile */}
-      <div className="flex-1 overflow-auto lg:overflow-hidden p-2 lg:h-[calc(100vh-40px)]">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-2 h-full">
-          
-          {/* Left Column - 4 cols */}
-          <div className="lg:col-span-4 flex flex-col gap-2 h-full">
+        {/* Content */}
+        <div className="flex-1 overflow-auto p-4">
+          <div className="h-full flex flex-col gap-4">
             
-            {/* 今月の経営速報 */}
-            <div className="bg-white rounded-lg shadow p-2 border border-slate-200" style={{ flex: '0 0 auto' }}>
-              <h3 className="text-xs font-semibold text-slate-700 mb-1">今月の経営速報</h3>
-              <div className="space-y-1">
-                <div>
-                  <div className="text-xs text-slate-600">売上</div>
-                  <EditableNumber
-                    value={editMode ? tempData.currentMonth.revenue : data.currentMonth.revenue}
-                    onChange={(v) => updateValue('currentMonth.revenue', v)}
-                  />
-                </div>
-                <div>
-                  <div className="text-xs text-slate-600">経費</div>
-                  <EditableNumber
-                    value={editMode ? tempData.currentMonth.expenses : data.currentMonth.expenses}
-                    onChange={(v) => updateValue('currentMonth.expenses', v)}
-                  />
-                </div>
-                <div>
-                  <div className="text-xs text-slate-600">営業利益</div>
-                  <EditableNumber
-                    value={editMode ? tempData.currentMonth.profit : data.currentMonth.profit}
-                    onChange={(v) => updateValue('currentMonth.profit', v)}
-                  />
+            {/* Top Row - 3 Cards */}
+            <div className="grid grid-cols-3 gap-4" style={{ height: '28%' }}>
+              
+              {/* 今月の経営速報 */}
+              <div className="bg-white rounded-lg shadow p-4">
+                <h3 className="text-sm font-semibold text-slate-700 mb-3">今月の経営速報（11月度速報値）</h3>
+                <div className="grid grid-cols-3 gap-4">
+                  <div>
+                    <div className="text-xs text-slate-600 mb-2">売上</div>
+                    <div className="text-xs text-slate-500 mb-1">保険</div>
+                    <div className="mb-2">
+                      <EditableNumber
+                        value={editMode ? tempData.currentMonth.revenue : data.currentMonth.revenue}
+                        onChange={(v) => updateValue('currentMonth.revenue', v)}
+                      />
+                    </div>
+                    <div className="text-xs text-slate-500 mb-1">自費</div>
+                    <div className="text-base font-semibold mb-2">{formatCurrency(editMode ? tempData.currentMonth.insurance : data.currentMonth.insurance)}</div>
+                    <div className="flex items-center space-x-1 text-green-600 text-xs">
+                      <TrendingUp className="w-3 h-3" />
+                      <span>YoY比較</span>
+                    </div>
+                  </div>
+                  <div>
+                    <div className="text-xs text-slate-600 mb-2">経費</div>
+                    <div className="mb-2">
+                      <EditableNumber
+                        value={editMode ? tempData.currentMonth.expenses : data.currentMonth.expenses}
+                        onChange={(v) => updateValue('currentMonth.expenses', v)}
+                      />
+                    </div>
+                    <div className="text-xs text-slate-500 mb-1">材料費</div>
+                    <div className="text-base font-semibold mb-2">¥2,500,000</div>
+                    <div className="flex items-center space-x-1 text-red-600 text-xs">
+                      <TrendingDown className="w-3 h-3" />
+                      <span>YoY比較</span>
+                    </div>
+                  </div>
+                  <div>
+                    <div className="text-xs text-slate-600 mb-2">営業利益</div>
+                    <div className="mb-2">
+                      <EditableNumber
+                        value={editMode ? tempData.currentMonth.profit : data.currentMonth.profit}
+                        onChange={(v) => updateValue('currentMonth.profit', v)}
+                      />
+                    </div>
+                    <div className="h-8"></div>
+                    <div className="flex items-center space-x-1 text-green-600 text-xs mt-6">
+                      <TrendingUp className="w-3 h-3" />
+                      <span>YoY比較</span>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            {/* 納税見込み額 */}
-            <div className="bg-white rounded-lg shadow p-2 border border-slate-200" style={{ flex: '0 0 auto' }}>
-              <h3 className="text-xs font-semibold text-slate-700 mb-1">納税見込み額</h3>
-              <div className="space-y-1">
-                <div className="flex justify-between">
-                  <span className="text-xs text-slate-600">所得税</span>
-                  <span className="text-xs font-bold">{formatCurrency(editMode ? tempData.taxEstimate.income : data.taxEstimate.income)}</span>
+              {/* 納税見込み額 */}
+              <div className="bg-white rounded-lg shadow p-4">
+                <h3 className="text-sm font-semibold text-slate-700 mb-3">納税見込み額（2025年度予測）</h3>
+                <div className="grid grid-cols-3 gap-4">
+                  <div>
+                    <div className="text-xs text-slate-600 mb-2">所得税</div>
+                    <div className="text-xl font-bold">{formatCurrency(editMode ? tempData.taxEstimate.income : data.taxEstimate.income)}</div>
+                  </div>
+                  <div>
+                    <div className="text-xs text-slate-600 mb-2">消費税</div>
+                    <div className="text-xl font-bold">{formatCurrency(editMode ? tempData.taxEstimate.consumption : data.taxEstimate.consumption)}</div>
+                  </div>
+                  <div>
+                    <div className="text-xs text-slate-600 mb-2">住民税</div>
+                    <div className="text-xl font-bold">{formatCurrency(editMode ? tempData.taxEstimate.resident : data.taxEstimate.resident)}</div>
+                  </div>
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-xs text-slate-600">消費税</span>
-                  <span className="text-xs font-bold">{formatCurrency(editMode ? tempData.taxEstimate.consumption : data.taxEstimate.consumption)}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-xs text-slate-600">住民税</span>
-                  <span className="text-xs font-bold">{formatCurrency(editMode ? tempData.taxEstimate.resident : data.taxEstimate.resident)}</span>
+                <div className="mt-4">
+                  <div className="text-xs text-slate-600 mb-1">納税資金準備状況：65%</div>
+                  <div className="w-full bg-slate-200 rounded-full h-2">
+                    <div className="bg-blue-500 h-2 rounded-full" style={{ width: '65%' }}></div>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            {/* 資金繰りアラート */}
-            <div className="bg-gradient-to-br from-red-500 to-orange-500 rounded-lg shadow p-2 text-white flex-1 flex flex-col">
-              <div className="flex items-center space-x-1 mb-1">
-                <AlertTriangle className="w-4 h-4" />
-                <h3 className="text-xs font-semibold">資金繰り予測</h3>
-              </div>
-              <div className="flex-1 min-h-0">
-                <ResponsiveContainer width="100%" height="80%">
+              {/* 資金繰り予測アラート */}
+              <div className="bg-gradient-to-br from-red-500 to-orange-500 rounded-lg shadow p-4 text-white">
+                <div className="flex items-center justify-between mb-2">
+                  <h3 className="text-sm font-semibold">資金繰り予測アラート</h3>
+                  <AlertTriangle className="w-5 h-5" />
+                </div>
+                <div className="text-xs mb-2">3ヶ月キャッシュフロー予想</div>
+                <ResponsiveContainer width="100%" height="50%">
                   <LineChart data={editMode ? tempData.cashFlow : data.cashFlow}>
-                    <Line type="monotone" dataKey="value" stroke="#fff" strokeWidth={2} dot={false} />
+                    <XAxis dataKey="month" tick={{ fill: '#fff', fontSize: 10 }} />
+                    <Line type="monotone" dataKey="value" stroke="#fff" strokeWidth={2} dot={{ fill: '#fff', r: 3 }} />
                   </LineChart>
                 </ResponsiveContainer>
-              </div>
-              <p className="text-xs mt-1">⚠️ 2026年1月に資金不足リスク</p>
-            </div>
-          </div>
-
-          {/* Center Column - 5 cols */}
-          <div className="lg:col-span-5 flex flex-col gap-2 h-full">
-            
-            {/* 月次推移 */}
-            <div className="bg-white rounded-lg shadow p-2 border border-slate-200" style={{ flex: '0 0 55%' }}>
-              <h3 className="text-xs font-semibold text-slate-800 mb-1">月次推移（直近12ヶ月）</h3>
-              <div className="h-[calc(100%-20px)]">
-                <ResponsiveContainer width="100%" height="100%">
-                  <ComposedChart data={editMode ? tempData.monthlyData : data.monthlyData} margin={{ left: 5, right: 5, top: 5, bottom: 5 }}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
-                    <XAxis dataKey="month" tick={{ fill: '#64748b', fontSize: 9 }} />
-                    <YAxis 
-                      tick={{ fill: '#64748b', fontSize: 9 }}
-                      tickFormatter={(value) => `¥${(value / 1000000).toFixed(1)}M`}
-                      width={45}
-                    />
-                    <Tooltip formatter={(value) => formatCurrency(value)} contentStyle={{ fontSize: '10px' }} />
-                    <Legend wrapperStyle={{ fontSize: '9px' }} />
-                    <Bar dataKey="revenue" fill="#3b82f6" name="売上" radius={[4, 4, 0, 0]} />
-                    <Bar dataKey="expenses" fill="#f59e0b" name="経費" radius={[4, 4, 0, 0]} />
-                  </ComposedChart>
-                </ResponsiveContainer>
+                <div className="bg-white/20 backdrop-blur rounded p-2 mt-2">
+                  <div className="flex items-center space-x-1 text-xs">
+                    <AlertTriangle className="w-4 h-4" />
+                    <span>2026年1月に資金不足のリスクがあります</span>
+                  </div>
+                </div>
+                <button className="w-full bg-white text-red-600 font-semibold py-2 rounded mt-2 text-sm hover:bg-slate-50 transition">
+                  対策を確認する
+                </button>
               </div>
             </div>
 
-            {/* 診療分析 */}
-            <div className="bg-white rounded-lg shadow p-2 border border-slate-200 flex-1">
-              <h3 className="text-xs font-semibold text-slate-800 mb-1">診療分析</h3>
-              <div className="grid grid-cols-2 gap-2 h-[calc(100%-20px)]">
-                <div>
-                  <h4 className="text-xs text-slate-600 mb-1">自費率推移</h4>
-                  <ResponsiveContainer width="100%" height="85%">
-                    <LineChart data={[
-                      { month: '8月', rate: 78 },
-                      { month: '9月', rate: 76 },
-                      { month: '10月', rate: 79 },
-                      { month: '11月', rate: 82 }
+            {/* Bottom Row */}
+            <div className="grid grid-cols-3 gap-4 flex-1 min-h-0">
+              
+              {/* Left - 経営分析 */}
+              <div className="col-span-2 bg-slate-100 rounded-lg p-3 overflow-auto">
+                <h2 className="text-base font-bold text-slate-800 mb-3">経営分析</h2>
+                
+                <div className="grid grid-cols-2 gap-3 mb-3">
+                  <div className="bg-white rounded-lg shadow p-3">
+                    <h3 className="text-sm font-semibold text-slate-800 mb-2">月次推移（直近12ヶ月）</h3>
+                    <ResponsiveContainer width="100%" height={160}>
+                      <ComposedChart data={editMode ? tempData.monthlyData : data.monthlyData}>
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis dataKey="month" tick={{ fontSize: 9 }} />
+                        <YAxis tick={{ fontSize: 9 }} tickFormatter={(v) => `¥${(v/1000000).toFixed(0)}M`} width={35} />
+                        <Tooltip formatter={(v) => formatCurrency(v)} />
+                        <Legend wrapperStyle={{ fontSize: '9px' }} />
+                        <Bar dataKey="revenue" fill="#3b82f6" name="売上" />
+                        <Bar dataKey="expenses" fill="#f59e0b" name="経費" />
+                        <Line type="monotone" dataKey="profit" stroke="#10b981" strokeWidth={2} name="利益" />
+                      </ComposedChart>
+                    </ResponsiveContainer>
+                  </div>
+                  
+                  <div className="bg-white rounded-lg shadow p-3">
+                    <h3 className="text-sm font-semibold text-slate-800 mb-2">診療分析</h3>
+                    <h4 className="text-xs text-slate-600 mb-1">自費率推移</h4>
+                    <ResponsiveContainer width="100%" height={70}>
+                      <LineChart data={[
+                        { m: '5月', r: 72, t: 80 },
+                        { m: '6月', r: 75, t: 80 },
+                        { m: '7月', r: 77, t: 80 },
+                        { m: '8月', r: 78, t: 80 },
+                        { m: '9月', r: 76, t: 80 },
+                        { m: '10月', r: 79, t: 80 },
+                        { m: '11月', r: 82, t: 80 },
+                        { m: '12月', r: 80, t: 80 }
+                      ]}>
+                        <XAxis dataKey="m" tick={{ fontSize: 8 }} />
+                        <YAxis domain={[0, 100]} tick={{ fontSize: 8 }} />
+                        <Line type="monotone" dataKey="r" stroke="#3b82f6" strokeWidth={2} dot={{ r: 2 }} />
+                        <Line type="monotone" dataKey="t" stroke="#94a3b8" strokeDasharray="3 3" strokeWidth={1} dot={false} />
+                      </LineChart>
+                    </ResponsiveContainer>
+                    <h4 className="text-xs font-semibold text-slate-700 mb-1 mt-2">11月度 診療メニュー別売上トップ5</h4>
+                    <table className="w-full text-xs">
+                      <tbody>
+                        <tr><td>インプラント</td><td className="text-right font-semibold">¥2,500,000</td></tr>
+                        <tr><td>矯正</td><td className="text-right font-semibold">¥1,800,000</td></tr>
+                        <tr><td>材料費</td><td className="text-right font-semibold">¥1,200,000</td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                
+                <div className="bg-white rounded-lg shadow p-3">
+                  <h3 className="text-sm font-semibold text-slate-800 mb-2">11月度 経費構成比</h3>
+                  <div className="grid grid-cols-2 gap-3">
+                    <ResponsiveContainer width="100%" height={180}>
+                      <PieChart>
+                        <Pie data={[
+                          { value: 2500000, fill: '#3b82f6' },
+                          { value: 1800000, fill: '#ef4444' },
+                          { value: 1200000, fill: '#10b981' },
+                          { value: 1800000, fill: '#f59e0b' },
+                          { value: 1000000, fill: '#8b5cf6' },
+                          { value: 900000, fill: '#ec4899' }
+                        ]} cx="50%" cy="50%" innerRadius={30} outerRadius={60} dataKey="value">
+                        </Pie>
+                        <Tooltip formatter={(v) => formatCurrency(v)} />
+                      </PieChart>
+                    </ResponsiveContainer>
+                    
+                    <div className="space-y-1 text-xs">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center space-x-2">
+                          <div className="w-3 h-3 rounded" style={{ backgroundColor: '#3b82f6' }}></div>
+                          <span>材料費</span>
+                        </div>
+                        <span className="font-semibold">¥2,500,000</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center space-x-2">
+                          <div className="w-3 h-3 rounded" style={{ backgroundColor: '#ef4444' }}></div>
+                          <span>人件費</span>
+                        </div>
+                        <span className="font-semibold">¥1,800,000</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center space-x-2">
+                          <div className="w-3 h-3 rounded" style={{ backgroundColor: '#10b981' }}></div>
+                          <span>材料費</span>
+                        </div>
+                        <span className="font-semibold">¥1,200,000</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center space-x-2">
+                          <div className="w-3 h-3 rounded" style={{ backgroundColor: '#f59e0b' }}></div>
+                          <span>インプラント</span>
+                        </div>
+                        <span className="font-semibold">¥1,800,000</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center space-x-2">
+                          <div className="w-3 h-3 rounded" style={{ backgroundColor: '#8b5cf6' }}></div>
+                          <span>加工費</span>
+                        </div>
+                        <span className="font-semibold">¥1,000,000</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center space-x-2">
+                          <div className="w-3 h-3 rounded" style={{ backgroundColor: '#ec4899' }}></div>
+                          <span>その他</span>
+                        </div>
+                        <span className="font-semibold">¥900,000</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Right - アクション&管理 */}
+              <div className="bg-slate-100 rounded-lg p-3 overflow-auto">
+                <h2 className="text-base font-bold text-slate-800 mb-3">アクション&管理</h2>
+                
+                <div className="bg-white rounded-lg shadow p-3 mb-3">
+                  <h3 className="text-sm font-semibold text-slate-800 mb-2">やることリスト（To-Do）</h3>
+                  <div className="space-y-2 text-xs">
+                    <label className="flex items-center space-x-2"><input type="checkbox" className="w-4 h-4" /><span>未アップロード領収書（5件）</span></label>
+                    <label className="flex items-center space-x-2"><input type="checkbox" className="w-4 h-4" /><span>給与データ確認（あと2日）</span></label>
+                    <label className="flex items-center space-x-2"><input type="checkbox" className="w-4 h-4" /><span>税理士からの質問に回答</span></label>
+                  </div>
+                </div>
+                
+                <div className="bg-white rounded-lg shadow p-3 mb-3">
+                  <h3 className="text-sm font-semibold text-slate-800 mb-2">税理士からのアドバイス</h3>
+                  <div className="text-xs bg-blue-50 p-2 rounded">
+                    <p>今月の材料費率が前年比+2.5%となっています。在庫管理の見直しを推奨します。</p>
+                  </div>
+                </div>
+                
+                <div className="bg-white rounded-lg shadow p-3">
+                  <h3 className="text-sm font-semibold text-slate-800 mb-2">設備投資計画（シミュレーション）</h3>
+                  <div className="text-xs space-y-1 mb-2">
+                    <div className="flex justify-between"><span>ユニット2台</span><span className="font-semibold">¥30,000</span></div>
+                    <div className="flex justify-between"><span>ユニット2台</span><span className="font-semibold">¥2,000,000</span></div>
+                    <div className="flex justify-between"><span>CT</span><span className="font-semibold">¥1,800,000</span></div>
+                  </div>
+                  <h4 className="text-xs font-semibold mb-1">ローン返済シミュレーション</h4>
+                  <ResponsiveContainer width="100%" height={80}>
+                    <BarChart data={[
+                      { m: '1月', v: 10000 },
+                      { m: '2月', v: 12000 },
+                      { m: '3月', v: 14000 },
+                      { m: '4月', v: 15000 },
+                      { m: '5月', v: 16000 }
                     ]}>
-                      <XAxis dataKey="month" tick={{ fontSize: 8 }} />
-                      <YAxis domain={[70, 85]} tick={{ fontSize: 8 }} />
-                      <Line type="monotone" dataKey="rate" stroke="#3b82f6" strokeWidth={2} dot={{ r: 3 }} />
-                    </LineChart>
+                      <XAxis dataKey="m" tick={{ fontSize: 8 }} />
+                      <Bar dataKey="v" fill="#3b82f6" />
+                    </BarChart>
                   </ResponsiveContainer>
                 </div>
-                <div>
-                  <h4 className="text-xs text-slate-600 mb-1">診療メニュー別売上</h4>
-                  <div className="space-y-1 text-xs">
-                    <div className="flex justify-between">
-                      <span>インプラント</span>
-                      <span className="font-semibold">¥250万</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span>矯正</span>
-                      <span className="font-semibold">¥180万</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span>材料費</span>
-                      <span className="font-semibold">¥120万</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span>経費</span>
-                      <span className="font-semibold">¥100万</span>
-                    </div>
-                  </div>
-                </div>
               </div>
             </div>
-          </div>
-
-          {/* Right Column - 3 cols */}
-          <div className="lg:col-span-3 flex flex-col gap-2 h-full">
-            
-            {/* 経費分析 */}
-            <div className="bg-white rounded-lg shadow p-2 border border-slate-200" style={{ flex: '0 0 55%' }}>
-              <h3 className="text-xs font-semibold text-slate-800 mb-1">経費分析</h3>
-              <div className="h-[calc(50%-10px)]">
-                <ResponsiveContainer width="100%" height="100%">
-                <PieChart>
-                  <Pie
-                    data={[
-                      { name: '材料費', value: 2500000, color: '#3b82f6' },
-                      { name: '人件費', value: 1800000, color: '#ef4444' },
-                      { name: 'その他', value: 2800000, color: '#10b981' }
-                    ]}
-                    cx="50%"
-                    cy="50%"
-                    innerRadius={25}
-                    outerRadius={50}
-                    dataKey="value"
-                  >
-                    {[
-                      { color: '#3b82f6' },
-                      { color: '#ef4444' },
-                      { color: '#10b981' }
-                    ].map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={entry.color} />
-                    ))}
-                  </Pie>
-                  <Tooltip formatter={(value) => formatCurrency(value)} contentStyle={{ fontSize: '10px' }} />
-                </PieChart>
-              </ResponsiveContainer>
-              </div>
-              <div className="space-y-0.5 text-xs mt-1">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-1">
-                    <div className="w-2 h-2 bg-blue-500 rounded"></div>
-                    <span>材料費</span>
-                  </div>
-                  <span className="font-semibold">¥250万</span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-1">
-                    <div className="w-2 h-2 bg-red-500 rounded"></div>
-                    <span>人件費</span>
-                  </div>
-                  <span className="font-semibold">¥180万</span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-1">
-                    <div className="w-2 h-2 bg-green-500 rounded"></div>
-                    <span>その他</span>
-                  </div>
-                  <span className="font-semibold">¥280万</span>
-                </div>
-              </div>
-            </div>
-
-            {/* To-Do */}
-            <div className="bg-white rounded-lg shadow p-2 border border-slate-200 flex-1">
-              <h3 className="text-xs font-semibold text-slate-800 mb-1">To-Do</h3>
-              <div className="space-y-1">
-                <label className="flex items-center space-x-1 text-xs">
-                  <input type="checkbox" className="w-3 h-3" />
-                  <span>未アップロード領収書 (5件)</span>
-                </label>
-                <label className="flex items-center space-x-1 text-xs">
-                  <input type="checkbox" className="w-3 h-3" />
-                  <span>給与データ確認 (あと2日)</span>
-                </label>
-                <label className="flex items-center space-x-1 text-xs">
-                  <input type="checkbox" className="w-3 h-3" />
-                  <span>税理士からの質問に回答</span>
-                </label>
-              </div>
-              <div className="mt-2 pt-2 border-t border-slate-200">
-                <h4 className="text-xs font-semibold text-slate-700 mb-1">税理士アドバイス</h4>
-                <p className="text-xs text-slate-600">12月中の設備投資で節税効果が見込めます</p>
-              </div>
-            </div>
-
           </div>
         </div>
       </div>
