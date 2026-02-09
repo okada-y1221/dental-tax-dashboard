@@ -87,7 +87,7 @@ const DentalTaxDashboard = () => {
   };
 
   return (
-    <div className="flex min-h-screen lg:h-screen bg-slate-50">
+    <div className="flex min-h-screen lg:h-screen bg-slate-50 overflow-hidden">
       {/* Sidebar with Hamburger Menu */}
       <aside className={`fixed lg:static inset-y-0 left-0 z-50 w-48 bg-slate-800 text-white flex flex-col transform transition-transform duration-300 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}>
         <div className="p-4 flex items-center space-x-2 border-b border-slate-700">
@@ -146,7 +146,7 @@ const DentalTaxDashboard = () => {
       )}
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col min-h-screen lg:h-screen">
+      <div className="flex-1 flex flex-col min-h-0 w-full">
         {/* Header */}
         <header className="bg-gradient-to-r from-slate-700 to-blue-800 text-white px-3 sm:px-6 py-3 flex items-center justify-between">
           <div className="flex items-center space-x-2 sm:space-x-3">
@@ -196,14 +196,15 @@ const DentalTaxDashboard = () => {
         </header>
 
         {/* Content */}
-        <div className="flex-1 p-4 lg:overflow-auto">
-          <div className="flex flex-col gap-4 lg:h-full lg:min-h-0">
+        <div className="flex-1 overflow-y-auto overflow-x-hidden p-4">
+          <div className="flex flex-col gap-4 min-h-full lg:h-full">
             
             {/* Top Row - 3 Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:h-[28%]">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
+              
               
               {/* 今月の経営速報 */}
-              <div className="bg-white rounded-lg shadow p-4">
+              <div className="bg-white rounded-lg shadow p-4 min-h-[200px]">
                 <h3 className="text-sm font-semibold text-slate-700 mb-3">今月の経営速報（11月度速報値）</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   <div>
@@ -255,7 +256,7 @@ const DentalTaxDashboard = () => {
               </div>
 
               {/* 納税見込み額 */}
-              <div className="bg-white rounded-lg shadow p-4">
+              <div className="bg-white rounded-lg shadow p-4 min-h-[200px]">
                 <h3 className="text-sm font-semibold text-slate-700 mb-3">納税見込み額（2025年度予測）</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   <div>
@@ -280,18 +281,20 @@ const DentalTaxDashboard = () => {
               </div>
 
               {/* 資金繰り予測アラート */}
-              <div className="bg-gradient-to-br from-red-500 to-orange-500 rounded-lg shadow p-4 text-white">
+              <div className="bg-gradient-to-br from-red-500 to-orange-500 rounded-lg shadow p-4 text-white min-h-[200px] flex flex-col">
                 <div className="flex items-center justify-between mb-2">
                   <h3 className="text-sm font-semibold">資金繰り予測アラート</h3>
                   <AlertTriangle className="w-5 h-5" />
                 </div>
                 <div className="text-xs mb-2">3ヶ月キャッシュフロー予想</div>
-                <ResponsiveContainer width="100%" height="50%">
-                  <LineChart data={editMode ? tempData.cashFlow : data.cashFlow}>
-                    <XAxis dataKey="month" tick={{ fill: '#fff', fontSize: 10 }} />
-                    <Line type="monotone" dataKey="value" stroke="#fff" strokeWidth={2} dot={{ fill: '#fff', r: 3 }} />
-                  </LineChart>
-                </ResponsiveContainer>
+                <div className="flex-1 min-h-[80px]">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <LineChart data={editMode ? tempData.cashFlow : data.cashFlow}>
+                      <XAxis dataKey="month" tick={{ fill: '#fff', fontSize: 10 }} />
+                      <Line type="monotone" dataKey="value" stroke="#fff" strokeWidth={2} dot={{ fill: '#fff', r: 3 }} />
+                    </LineChart>
+                  </ResponsiveContainer>
+                </div>
                 <div className="bg-white/20 backdrop-blur rounded p-2 mt-2">
                   <div className="flex items-center space-x-1 text-xs">
                     <AlertTriangle className="w-4 h-4" />
@@ -305,16 +308,17 @@ const DentalTaxDashboard = () => {
             </div>
 
             {/* Bottom Row */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:flex-1 lg:min-h-0">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 w-full">
+              
               
               {/* Left - 経営分析 */}
-              <div className="lg:col-span-2 bg-slate-100 rounded-lg p-3 lg:overflow-auto">
+              <div className="lg:col-span-2 bg-slate-100 rounded-lg p-3 min-h-[500px] lg:min-h-[600px]">
                 <h2 className="text-base font-bold text-slate-800 mb-3">経営分析</h2>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
-                  <div className="bg-white rounded-lg shadow p-3">
+                  <div className="bg-white rounded-lg shadow p-3 min-h-[250px]">
                     <h3 className="text-sm font-semibold text-slate-800 mb-2">月次推移（直近12ヶ月）</h3>
-                    <ResponsiveContainer width="100%" height={160}>
+                    <ResponsiveContainer width="100%" height={200}>
                       <ComposedChart data={editMode ? tempData.monthlyData : data.monthlyData}>
                         <CartesianGrid strokeDasharray="3 3" />
                         <XAxis dataKey="month" tick={{ fontSize: 9 }} />
@@ -328,7 +332,7 @@ const DentalTaxDashboard = () => {
                     </ResponsiveContainer>
                   </div>
                   
-                  <div className="bg-white rounded-lg shadow p-3">
+                  <div className="bg-white rounded-lg shadow p-3 min-h-[250px]">
                     <h3 className="text-sm font-semibold text-slate-800 mb-2">診療分析</h3>
                     
                     {/* 自費率推移 */}
@@ -433,7 +437,7 @@ const DentalTaxDashboard = () => {
                 </div>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                  <div className="bg-white rounded-lg shadow p-3">
+                  <div className="bg-white rounded-lg shadow p-3 min-h-[280px]">
                     <h3 className="text-sm font-semibold text-slate-800 mb-2">11月度 経費構成比</h3>
                     <div className="grid grid-cols-2 gap-3">
                       <ResponsiveContainer width="100%" height={180}>
@@ -498,7 +502,7 @@ const DentalTaxDashboard = () => {
                     </div>
                   </div>
                   
-                  <div className="bg-white rounded-lg shadow p-3">
+                  <div className="bg-white rounded-lg shadow p-3 min-h-[280px]">
                     <h3 className="text-sm font-semibold text-slate-800 mb-2">材料費・技工費率推移</h3>
                     <ResponsiveContainer width="100%" height={180}>
                       <LineChart data={[
@@ -525,7 +529,7 @@ const DentalTaxDashboard = () => {
               </div>
 
               {/* Right - アクション&管理 */}
-              <div className="bg-slate-100 rounded-lg p-3 lg:overflow-auto">
+              <div className="bg-slate-100 rounded-lg p-3 min-h-[500px] lg:min-h-[600px]">
                 <h2 className="text-base font-bold text-slate-800 mb-3">アクション&管理</h2>
                 
                 <div className="bg-white rounded-lg shadow p-3 mb-3">
