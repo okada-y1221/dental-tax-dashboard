@@ -148,26 +148,26 @@ const DentalTaxDashboard = () => {
       {/* Main Content */}
       <div className="flex-1 flex flex-col min-h-screen lg:h-screen">
         {/* Header */}
-        <header className="bg-gradient-to-r from-slate-700 to-blue-800 text-white px-6 py-3 flex items-center justify-between">
-          <div className="flex items-center space-x-3">
+        <header className="bg-gradient-to-r from-slate-700 to-blue-800 text-white px-3 sm:px-6 py-3 flex items-center justify-between">
+          <div className="flex items-center space-x-2 sm:space-x-3">
             <button 
               onClick={() => setSidebarOpen(!sidebarOpen)}
               className="lg:hidden p-2 hover:bg-slate-600/50 rounded"
             >
               <Menu className="w-5 h-5" />
             </button>
-            <h1 className="text-lg font-bold">全体サマリー</h1>
+            <h1 className="text-sm sm:text-lg font-bold">全体サマリー</h1>
           </div>
-          <div className="flex items-center space-x-4">
-            <div className="flex items-center space-x-2 bg-slate-600/50 px-3 py-1 rounded text-sm">
+          <div className="flex items-center space-x-2 sm:space-x-4">
+            <div className="hidden sm:flex items-center space-x-2 bg-slate-600/50 px-3 py-1 rounded text-sm">
               <Calendar className="w-4 h-4" />
               <span>2025年11月</span>
             </div>
             <button className="relative p-2 hover:bg-slate-600/50 rounded">
-              <Bell className="w-5 h-5" />
+              <Bell className="w-4 h-4 sm:w-5 sm:h-5" />
               <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
             </button>
-            <div className="flex items-center space-x-2 bg-slate-600/50 px-3 py-1 rounded">
+            <div className="hidden md:flex items-center space-x-2 bg-slate-600/50 px-3 py-1 rounded">
               <div className="w-7 h-7 bg-blue-500 rounded-full flex items-center justify-center text-xs font-bold">
                 ○○
               </div>
@@ -177,18 +177,18 @@ const DentalTaxDashboard = () => {
               </div>
             </div>
             {!editMode ? (
-              <button onClick={handleEdit} className="flex items-center space-x-1 bg-blue-600 hover:bg-blue-700 px-3 py-1.5 rounded text-sm">
-                <Edit3 className="w-4 h-4" />
-                <span>編集</span>
+              <button onClick={handleEdit} className="flex items-center space-x-1 bg-blue-600 hover:bg-blue-700 px-2 sm:px-3 py-1 sm:py-1.5 rounded text-xs sm:text-sm">
+                <Edit3 className="w-3 h-3 sm:w-4 sm:h-4" />
+                <span className="hidden sm:inline">編集</span>
               </button>
             ) : (
-              <div className="flex space-x-2">
-                <button onClick={handleSave} className="flex items-center space-x-1 bg-green-600 hover:bg-green-700 px-3 py-1.5 rounded text-sm">
-                  <Save className="w-4 h-4" />
-                  <span>保存</span>
+              <div className="flex space-x-1 sm:space-x-2">
+                <button onClick={handleSave} className="flex items-center space-x-1 bg-green-600 hover:bg-green-700 px-2 sm:px-3 py-1 sm:py-1.5 rounded text-xs sm:text-sm">
+                  <Save className="w-3 h-3 sm:w-4 sm:h-4" />
+                  <span className="hidden sm:inline">保存</span>
                 </button>
-                <button onClick={handleCancel} className="flex items-center space-x-1 bg-slate-600 hover:bg-slate-700 px-3 py-1.5 rounded text-sm">
-                  <X className="w-4 h-4" />
+                <button onClick={handleCancel} className="flex items-center space-x-1 bg-slate-600 hover:bg-slate-700 px-2 sm:px-3 py-1 sm:py-1.5 rounded text-xs sm:text-sm">
+                  <X className="w-3 h-3 sm:w-4 sm:h-4" />
                 </button>
               </div>
             )}
