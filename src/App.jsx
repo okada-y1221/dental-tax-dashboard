@@ -87,7 +87,7 @@ const DentalTaxDashboard = () => {
   };
 
   return (
-    <div className="h-screen bg-gradient-to-br from-slate-50 to-blue-50 overflow-hidden flex flex-col">
+    <div className="min-h-screen lg:h-screen bg-gradient-to-br from-slate-50 to-blue-50 lg:overflow-hidden flex flex-col">
       {/* Compact Header */}
       <header className="bg-gradient-to-r from-slate-800 to-blue-900 text-white shadow-lg">
         <div className="px-3 py-1.5 flex items-center justify-between">
@@ -129,12 +129,12 @@ const DentalTaxDashboard = () => {
         </div>
       </header>
 
-      {/* Main Content - Fixed Height */}
-      <div className="flex-1 overflow-hidden p-2">
-        <div className="grid grid-cols-12 gap-2 h-full">
+      {/* Main Content - Fixed Height on Desktop, Scrollable on Mobile */}
+      <div className="flex-1 overflow-auto lg:overflow-hidden p-2">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-2 lg:h-full">
           
           {/* Left Column - 4 cols */}
-          <div className="col-span-4 flex flex-col gap-2">
+          <div className="lg:col-span-4 flex flex-col gap-2">
             
             {/* 今月の経営速報 */}
             <div className="bg-white rounded-lg shadow p-2 border border-slate-200">
@@ -184,12 +184,12 @@ const DentalTaxDashboard = () => {
             </div>
 
             {/* 資金繰りアラート */}
-            <div className="bg-gradient-to-br from-red-500 to-orange-500 rounded-lg shadow p-2 text-white flex-1">
+            <div className="bg-gradient-to-br from-red-500 to-orange-500 rounded-lg shadow p-2 text-white" style={{ height: '140px' }}>
               <div className="flex items-center space-x-1 mb-1">
                 <AlertTriangle className="w-4 h-4" />
                 <h3 className="text-xs font-semibold">資金繰り予測</h3>
               </div>
-              <ResponsiveContainer width="100%" height={60}>
+              <ResponsiveContainer width="100%" height={70}>
                 <LineChart data={editMode ? tempData.cashFlow : data.cashFlow}>
                   <Line type="monotone" dataKey="value" stroke="#fff" strokeWidth={2} dot={false} />
                 </LineChart>
@@ -199,12 +199,12 @@ const DentalTaxDashboard = () => {
           </div>
 
           {/* Center Column - 5 cols */}
-          <div className="col-span-5 flex flex-col gap-2">
+          <div className="lg:col-span-5 flex flex-col gap-2">
             
             {/* 月次推移 */}
-            <div className="bg-white rounded-lg shadow p-2 border border-slate-200 flex-1">
+            <div className="bg-white rounded-lg shadow p-2 border border-slate-200" style={{ height: '260px' }}>
               <h3 className="text-xs font-semibold text-slate-800 mb-1">月次推移（直近12ヶ月）</h3>
-              <ResponsiveContainer width="100%" height="90%">
+              <ResponsiveContainer width="100%" height={230}>
                 <ComposedChart data={editMode ? tempData.monthlyData : data.monthlyData} margin={{ left: 5, right: 5, top: 5, bottom: 5 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
                   <XAxis dataKey="month" tick={{ fill: '#64748b', fontSize: 9 }} />
@@ -222,7 +222,7 @@ const DentalTaxDashboard = () => {
             </div>
 
             {/* 診療分析 */}
-            <div className="bg-white rounded-lg shadow p-2 border border-slate-200" style={{ height: '180px' }}>
+            <div className="bg-white rounded-lg shadow p-2 border border-slate-200" style={{ height: '200px' }}>
               <h3 className="text-xs font-semibold text-slate-800 mb-1">診療分析</h3>
               <div className="grid grid-cols-2 gap-2 h-[calc(100%-20px)]">
                 <div>
@@ -266,7 +266,7 @@ const DentalTaxDashboard = () => {
           </div>
 
           {/* Right Column - 3 cols */}
-          <div className="col-span-3 flex flex-col gap-2">
+          <div className="lg:col-span-3 flex flex-col gap-2">
             
             {/* 経費分析 */}
             <div className="bg-white rounded-lg shadow p-2 border border-slate-200">
@@ -322,7 +322,7 @@ const DentalTaxDashboard = () => {
             </div>
 
             {/* To-Do */}
-            <div className="bg-white rounded-lg shadow p-2 border border-slate-200 flex-1">
+            <div className="bg-white rounded-lg shadow p-2 border border-slate-200" style={{ height: '200px' }}>
               <h3 className="text-xs font-semibold text-slate-800 mb-1">To-Do</h3>
               <div className="space-y-1">
                 <label className="flex items-center space-x-1 text-xs">
