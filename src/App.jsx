@@ -40,7 +40,7 @@ const DentalTaxDashboard = () => {
   const [tempData, setTempData] = useState(data);
 
   const formatCurrency = (value) => {
-    return `¥${(value / 10000).toFixed(0)}万`;
+    return `¥${value.toLocaleString()}`;
   };
 
   const handleEdit = () => {
@@ -130,14 +130,14 @@ const DentalTaxDashboard = () => {
       </header>
 
       {/* Main Content - Fixed Height on Desktop, Scrollable on Mobile */}
-      <div className="flex-1 overflow-auto lg:overflow-hidden p-2">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-2 lg:h-full">
+      <div className="flex-1 overflow-auto lg:overflow-hidden p-2 lg:h-[calc(100vh-40px)]">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-2 h-full">
           
           {/* Left Column - 4 cols */}
-          <div className="lg:col-span-4 flex flex-col gap-2">
+          <div className="lg:col-span-4 flex flex-col gap-2 h-full">
             
             {/* 今月の経営速報 */}
-            <div className="bg-white rounded-lg shadow p-2 border border-slate-200">
+            <div className="bg-white rounded-lg shadow p-2 border border-slate-200" style={{ flex: '0 0 auto' }}>
               <h3 className="text-xs font-semibold text-slate-700 mb-1">今月の経営速報</h3>
               <div className="space-y-1">
                 <div>
@@ -165,7 +165,7 @@ const DentalTaxDashboard = () => {
             </div>
 
             {/* 納税見込み額 */}
-            <div className="bg-white rounded-lg shadow p-2 border border-slate-200">
+            <div className="bg-white rounded-lg shadow p-2 border border-slate-200" style={{ flex: '0 0 auto' }}>
               <h3 className="text-xs font-semibold text-slate-700 mb-1">納税見込み額</h3>
               <div className="space-y-1">
                 <div className="flex justify-between">
@@ -184,45 +184,49 @@ const DentalTaxDashboard = () => {
             </div>
 
             {/* 資金繰りアラート */}
-            <div className="bg-gradient-to-br from-red-500 to-orange-500 rounded-lg shadow p-2 text-white" style={{ height: '140px' }}>
+            <div className="bg-gradient-to-br from-red-500 to-orange-500 rounded-lg shadow p-2 text-white flex-1 flex flex-col">
               <div className="flex items-center space-x-1 mb-1">
                 <AlertTriangle className="w-4 h-4" />
                 <h3 className="text-xs font-semibold">資金繰り予測</h3>
               </div>
-              <ResponsiveContainer width="100%" height={70}>
-                <LineChart data={editMode ? tempData.cashFlow : data.cashFlow}>
-                  <Line type="monotone" dataKey="value" stroke="#fff" strokeWidth={2} dot={false} />
-                </LineChart>
-              </ResponsiveContainer>
+              <div className="flex-1 min-h-0">
+                <ResponsiveContainer width="100%" height="80%">
+                  <LineChart data={editMode ? tempData.cashFlow : data.cashFlow}>
+                    <Line type="monotone" dataKey="value" stroke="#fff" strokeWidth={2} dot={false} />
+                  </LineChart>
+                </ResponsiveContainer>
+              </div>
               <p className="text-xs mt-1">⚠️ 2026年1月に資金不足リスク</p>
             </div>
           </div>
 
           {/* Center Column - 5 cols */}
-          <div className="lg:col-span-5 flex flex-col gap-2">
+          <div className="lg:col-span-5 flex flex-col gap-2 h-full">
             
             {/* 月次推移 */}
-            <div className="bg-white rounded-lg shadow p-2 border border-slate-200" style={{ height: '260px' }}>
+            <div className="bg-white rounded-lg shadow p-2 border border-slate-200" style={{ flex: '0 0 55%' }}>
               <h3 className="text-xs font-semibold text-slate-800 mb-1">月次推移（直近12ヶ月）</h3>
-              <ResponsiveContainer width="100%" height={230}>
-                <ComposedChart data={editMode ? tempData.monthlyData : data.monthlyData} margin={{ left: 5, right: 5, top: 5, bottom: 5 }}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
-                  <XAxis dataKey="month" tick={{ fill: '#64748b', fontSize: 9 }} />
-                  <YAxis 
-                    tick={{ fill: '#64748b', fontSize: 9 }}
-                    tickFormatter={(value) => `${(value / 10000).toFixed(0)}万`}
-                    width={40}
-                  />
-                  <Tooltip formatter={(value) => formatCurrency(value)} contentStyle={{ fontSize: '10px' }} />
-                  <Legend wrapperStyle={{ fontSize: '9px' }} />
-                  <Bar dataKey="revenue" fill="#3b82f6" name="売上" radius={[4, 4, 0, 0]} />
-                  <Bar dataKey="expenses" fill="#f59e0b" name="経費" radius={[4, 4, 0, 0]} />
-                </ComposedChart>
-              </ResponsiveContainer>
+              <div className="h-[calc(100%-20px)]">
+                <ResponsiveContainer width="100%" height="100%">
+                  <ComposedChart data={editMode ? tempData.monthlyData : data.monthlyData} margin={{ left: 5, right: 5, top: 5, bottom: 5 }}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+                    <XAxis dataKey="month" tick={{ fill: '#64748b', fontSize: 9 }} />
+                    <YAxis 
+                      tick={{ fill: '#64748b', fontSize: 9 }}
+                      tickFormatter={(value) => `¥${(value / 1000000).toFixed(1)}M`}
+                      width={45}
+                    />
+                    <Tooltip formatter={(value) => formatCurrency(value)} contentStyle={{ fontSize: '10px' }} />
+                    <Legend wrapperStyle={{ fontSize: '9px' }} />
+                    <Bar dataKey="revenue" fill="#3b82f6" name="売上" radius={[4, 4, 0, 0]} />
+                    <Bar dataKey="expenses" fill="#f59e0b" name="経費" radius={[4, 4, 0, 0]} />
+                  </ComposedChart>
+                </ResponsiveContainer>
+              </div>
             </div>
 
             {/* 診療分析 */}
-            <div className="bg-white rounded-lg shadow p-2 border border-slate-200" style={{ height: '200px' }}>
+            <div className="bg-white rounded-lg shadow p-2 border border-slate-200 flex-1">
               <h3 className="text-xs font-semibold text-slate-800 mb-1">診療分析</h3>
               <div className="grid grid-cols-2 gap-2 h-[calc(100%-20px)]">
                 <div>
@@ -266,12 +270,13 @@ const DentalTaxDashboard = () => {
           </div>
 
           {/* Right Column - 3 cols */}
-          <div className="lg:col-span-3 flex flex-col gap-2">
+          <div className="lg:col-span-3 flex flex-col gap-2 h-full">
             
             {/* 経費分析 */}
-            <div className="bg-white rounded-lg shadow p-2 border border-slate-200">
+            <div className="bg-white rounded-lg shadow p-2 border border-slate-200" style={{ flex: '0 0 55%' }}>
               <h3 className="text-xs font-semibold text-slate-800 mb-1">経費分析</h3>
-              <ResponsiveContainer width="100%" height={120}>
+              <div className="h-[calc(50%-10px)]">
+                <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie
                     data={[
@@ -296,7 +301,8 @@ const DentalTaxDashboard = () => {
                   <Tooltip formatter={(value) => formatCurrency(value)} contentStyle={{ fontSize: '10px' }} />
                 </PieChart>
               </ResponsiveContainer>
-              <div className="space-y-0.5 text-xs">
+              </div>
+              <div className="space-y-0.5 text-xs mt-1">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-1">
                     <div className="w-2 h-2 bg-blue-500 rounded"></div>
@@ -322,7 +328,7 @@ const DentalTaxDashboard = () => {
             </div>
 
             {/* To-Do */}
-            <div className="bg-white rounded-lg shadow p-2 border border-slate-200" style={{ height: '200px' }}>
+            <div className="bg-white rounded-lg shadow p-2 border border-slate-200 flex-1">
               <h3 className="text-xs font-semibold text-slate-800 mb-1">To-Do</h3>
               <div className="space-y-1">
                 <label className="flex items-center space-x-1 text-xs">
