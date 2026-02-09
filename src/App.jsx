@@ -197,15 +197,15 @@ const DentalTaxDashboard = () => {
 
         {/* Content */}
         <div className="flex-1 overflow-auto p-4">
-          <div className="h-full flex flex-col gap-4">
+          <div className="h-full flex flex-col gap-4 lg:min-h-0">
             
             {/* Top Row - 3 Cards */}
-            <div className="grid grid-cols-3 gap-4" style={{ height: '28%' }}>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" style={{ height: 'auto', minHeight: '28%' }}>
               
               {/* 今月の経営速報 */}
               <div className="bg-white rounded-lg shadow p-4">
                 <h3 className="text-sm font-semibold text-slate-700 mb-3">今月の経営速報（11月度速報値）</h3>
-                <div className="grid grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   <div>
                     <div className="text-xs text-slate-600 mb-2">売上</div>
                     <div className="text-xs text-slate-500 mb-1">保険</div>
@@ -257,7 +257,7 @@ const DentalTaxDashboard = () => {
               {/* 納税見込み額 */}
               <div className="bg-white rounded-lg shadow p-4">
                 <h3 className="text-sm font-semibold text-slate-700 mb-3">納税見込み額（2025年度予測）</h3>
-                <div className="grid grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   <div>
                     <div className="text-xs text-slate-600 mb-2">所得税</div>
                     <div className="text-xl font-bold">{formatCurrency(editMode ? tempData.taxEstimate.income : data.taxEstimate.income)}</div>
@@ -305,13 +305,13 @@ const DentalTaxDashboard = () => {
             </div>
 
             {/* Bottom Row */}
-            <div className="grid grid-cols-3 gap-4 flex-1 min-h-0">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 flex-1 min-h-0">
               
               {/* Left - 経営分析 */}
-              <div className="col-span-2 bg-slate-100 rounded-lg p-3 overflow-auto">
+              <div className="lg:col-span-2 bg-slate-100 rounded-lg p-3 overflow-auto">
                 <h2 className="text-base font-bold text-slate-800 mb-3">経営分析</h2>
                 
-                <div className="grid grid-cols-2 gap-3 mb-3">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
                   <div className="bg-white rounded-lg shadow p-3">
                     <h3 className="text-sm font-semibold text-slate-800 mb-2">月次推移（直近12ヶ月）</h3>
                     <ResponsiveContainer width="100%" height={160}>
@@ -330,97 +330,196 @@ const DentalTaxDashboard = () => {
                   
                   <div className="bg-white rounded-lg shadow p-3">
                     <h3 className="text-sm font-semibold text-slate-800 mb-2">診療分析</h3>
-                    <h4 className="text-xs text-slate-600 mb-1">自費率推移</h4>
-                    <ResponsiveContainer width="100%" height={70}>
-                      <LineChart data={[
-                        { m: '5月', r: 72, t: 80 },
-                        { m: '6月', r: 75, t: 80 },
-                        { m: '7月', r: 77, t: 80 },
-                        { m: '8月', r: 78, t: 80 },
-                        { m: '9月', r: 76, t: 80 },
-                        { m: '10月', r: 79, t: 80 },
-                        { m: '11月', r: 82, t: 80 },
-                        { m: '12月', r: 80, t: 80 }
-                      ]}>
-                        <XAxis dataKey="m" tick={{ fontSize: 8 }} />
-                        <YAxis domain={[0, 100]} tick={{ fontSize: 8 }} />
-                        <Line type="monotone" dataKey="r" stroke="#3b82f6" strokeWidth={2} dot={{ r: 2 }} />
-                        <Line type="monotone" dataKey="t" stroke="#94a3b8" strokeDasharray="3 3" strokeWidth={1} dot={false} />
-                      </LineChart>
-                    </ResponsiveContainer>
-                    <h4 className="text-xs font-semibold text-slate-700 mb-1 mt-2">11月度 診療メニュー別売上トップ5</h4>
-                    <table className="w-full text-xs">
-                      <tbody>
-                        <tr><td>インプラント</td><td className="text-right font-semibold">¥2,500,000</td></tr>
-                        <tr><td>矯正</td><td className="text-right font-semibold">¥1,800,000</td></tr>
-                        <tr><td>材料費</td><td className="text-right font-semibold">¥1,200,000</td></tr>
-                      </tbody>
-                    </table>
+                    
+                    {/* 自費率推移 */}
+                    <div className="mb-3">
+                      <div className="flex items-center justify-between mb-1">
+                        <h4 className="text-xs text-slate-600">自費率推移</h4>
+                        <div className="text-xs">
+                          <span className="text-green-600 font-semibold">82%</span>
+                          <span className="text-slate-500 ml-1">(目標: 80%)</span>
+                        </div>
+                      </div>
+                      <ResponsiveContainer width="100%" height={100}>
+                        <LineChart data={[
+                          { month: '5月', rate: 72, target: 80 },
+                          { month: '6月', rate: 75, target: 80 },
+                          { month: '7月', rate: 77, target: 80 },
+                          { month: '8月', rate: 78, target: 80 },
+                          { month: '9月', rate: 76, target: 80 },
+                          { month: '10月', rate: 79, target: 80 },
+                          { month: '11月', rate: 82, target: 80 },
+                          { month: '12月', rate: 80, target: 80 }
+                        ]}>
+                          <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+                          <XAxis dataKey="month" tick={{ fontSize: 9 }} />
+                          <YAxis domain={[65, 85]} tick={{ fontSize: 9 }} tickFormatter={(v) => `${v}%`} />
+                          <Tooltip formatter={(v) => `${v}%`} contentStyle={{ fontSize: '10px' }} />
+                          <Line 
+                            type="monotone" 
+                            dataKey="rate" 
+                            stroke="#3b82f6" 
+                            strokeWidth={3} 
+                            name="自費率" 
+                            dot={{ fill: '#3b82f6', r: 4 }}
+                            activeDot={{ r: 6 }}
+                          />
+                          <Line 
+                            type="monotone" 
+                            dataKey="target" 
+                            stroke="#94a3b8" 
+                            strokeDasharray="5 5" 
+                            strokeWidth={2} 
+                            name="目標" 
+                            dot={false}
+                          />
+                          <Legend wrapperStyle={{ fontSize: '9px' }} />
+                        </LineChart>
+                      </ResponsiveContainer>
+                    </div>
+                    
+                    {/* 診療メニュー別売上トップ5 */}
+                    <div>
+                      <h4 className="text-xs font-semibold text-slate-700 mb-2">11月度 診療メニュー別売上トップ5</h4>
+                      <div className="space-y-1.5">
+                        <div className="flex items-center">
+                          <div className="w-20 text-xs text-slate-600">インプラント</div>
+                          <div className="flex-1 mx-2">
+                            <div className="h-5 bg-blue-100 rounded relative overflow-hidden">
+                              <div className="h-full bg-blue-500 rounded" style={{ width: '100%' }}></div>
+                            </div>
+                          </div>
+                          <div className="w-24 text-right text-xs font-semibold">¥2,500,000</div>
+                        </div>
+                        <div className="flex items-center">
+                          <div className="w-20 text-xs text-slate-600">矯正</div>
+                          <div className="flex-1 mx-2">
+                            <div className="h-5 bg-green-100 rounded relative overflow-hidden">
+                              <div className="h-full bg-green-500 rounded" style={{ width: '72%' }}></div>
+                            </div>
+                          </div>
+                          <div className="w-24 text-right text-xs font-semibold">¥1,800,000</div>
+                        </div>
+                        <div className="flex items-center">
+                          <div className="w-20 text-xs text-slate-600">ホワイトニング</div>
+                          <div className="flex-1 mx-2">
+                            <div className="h-5 bg-purple-100 rounded relative overflow-hidden">
+                              <div className="h-full bg-purple-500 rounded" style={{ width: '48%' }}></div>
+                            </div>
+                          </div>
+                          <div className="w-24 text-right text-xs font-semibold">¥1,200,000</div>
+                        </div>
+                        <div className="flex items-center">
+                          <div className="w-20 text-xs text-slate-600">審美治療</div>
+                          <div className="flex-1 mx-2">
+                            <div className="h-5 bg-orange-100 rounded relative overflow-hidden">
+                              <div className="h-full bg-orange-500 rounded" style={{ width: '40%' }}></div>
+                            </div>
+                          </div>
+                          <div className="w-24 text-right text-xs font-semibold">¥1,000,000</div>
+                        </div>
+                        <div className="flex items-center">
+                          <div className="w-20 text-xs text-slate-600">その他</div>
+                          <div className="flex-1 mx-2">
+                            <div className="h-5 bg-slate-100 rounded relative overflow-hidden">
+                              <div className="h-full bg-slate-400 rounded" style={{ width: '36%' }}></div>
+                            </div>
+                          </div>
+                          <div className="w-24 text-right text-xs font-semibold">¥900,000</div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
                 
-                <div className="bg-white rounded-lg shadow p-3">
-                  <h3 className="text-sm font-semibold text-slate-800 mb-2">11月度 経費構成比</h3>
-                  <div className="grid grid-cols-2 gap-3">
-                    <ResponsiveContainer width="100%" height={180}>
-                      <PieChart>
-                        <Pie data={[
-                          { value: 2500000, fill: '#3b82f6' },
-                          { value: 1800000, fill: '#ef4444' },
-                          { value: 1200000, fill: '#10b981' },
-                          { value: 1800000, fill: '#f59e0b' },
-                          { value: 1000000, fill: '#8b5cf6' },
-                          { value: 900000, fill: '#ec4899' }
-                        ]} cx="50%" cy="50%" innerRadius={30} outerRadius={60} dataKey="value">
-                        </Pie>
-                        <Tooltip formatter={(v) => formatCurrency(v)} />
-                      </PieChart>
-                    </ResponsiveContainer>
-                    
-                    <div className="space-y-1 text-xs">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center space-x-2">
-                          <div className="w-3 h-3 rounded" style={{ backgroundColor: '#3b82f6' }}></div>
-                          <span>材料費</span>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  <div className="bg-white rounded-lg shadow p-3">
+                    <h3 className="text-sm font-semibold text-slate-800 mb-2">11月度 経費構成比</h3>
+                    <div className="grid grid-cols-2 gap-3">
+                      <ResponsiveContainer width="100%" height={180}>
+                        <PieChart>
+                          <Pie data={[
+                            { value: 2500000, fill: '#3b82f6' },
+                            { value: 1800000, fill: '#ef4444' },
+                            { value: 1200000, fill: '#10b981' },
+                            { value: 1800000, fill: '#f59e0b' },
+                            { value: 1000000, fill: '#8b5cf6' },
+                            { value: 900000, fill: '#ec4899' }
+                          ]} cx="50%" cy="50%" innerRadius={30} outerRadius={60} dataKey="value">
+                          </Pie>
+                          <Tooltip formatter={(v) => formatCurrency(v)} />
+                        </PieChart>
+                      </ResponsiveContainer>
+                      
+                      <div className="space-y-1 text-xs">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center space-x-2">
+                            <div className="w-3 h-3 rounded" style={{ backgroundColor: '#3b82f6' }}></div>
+                            <span>材料費</span>
+                          </div>
+                          <span className="font-semibold">¥2,500,000</span>
                         </div>
-                        <span className="font-semibold">¥2,500,000</span>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center space-x-2">
-                          <div className="w-3 h-3 rounded" style={{ backgroundColor: '#ef4444' }}></div>
-                          <span>人件費</span>
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center space-x-2">
+                            <div className="w-3 h-3 rounded" style={{ backgroundColor: '#ef4444' }}></div>
+                            <span>人件費</span>
+                          </div>
+                          <span className="font-semibold">¥1,800,000</span>
                         </div>
-                        <span className="font-semibold">¥1,800,000</span>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center space-x-2">
-                          <div className="w-3 h-3 rounded" style={{ backgroundColor: '#10b981' }}></div>
-                          <span>材料費</span>
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center space-x-2">
+                            <div className="w-3 h-3 rounded" style={{ backgroundColor: '#10b981' }}></div>
+                            <span>材料費</span>
+                          </div>
+                          <span className="font-semibold">¥1,200,000</span>
                         </div>
-                        <span className="font-semibold">¥1,200,000</span>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center space-x-2">
-                          <div className="w-3 h-3 rounded" style={{ backgroundColor: '#f59e0b' }}></div>
-                          <span>インプラント</span>
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center space-x-2">
+                            <div className="w-3 h-3 rounded" style={{ backgroundColor: '#f59e0b' }}></div>
+                            <span>インプラント</span>
+                          </div>
+                          <span className="font-semibold">¥1,800,000</span>
                         </div>
-                        <span className="font-semibold">¥1,800,000</span>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center space-x-2">
-                          <div className="w-3 h-3 rounded" style={{ backgroundColor: '#8b5cf6' }}></div>
-                          <span>加工費</span>
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center space-x-2">
+                            <div className="w-3 h-3 rounded" style={{ backgroundColor: '#8b5cf6' }}></div>
+                            <span>加工費</span>
+                          </div>
+                          <span className="font-semibold">¥1,000,000</span>
                         </div>
-                        <span className="font-semibold">¥1,000,000</span>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center space-x-2">
-                          <div className="w-3 h-3 rounded" style={{ backgroundColor: '#ec4899' }}></div>
-                          <span>その他</span>
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center space-x-2">
+                            <div className="w-3 h-3 rounded" style={{ backgroundColor: '#ec4899' }}></div>
+                            <span>その他</span>
+                          </div>
+                          <span className="font-semibold">¥900,000</span>
                         </div>
-                        <span className="font-semibold">¥900,000</span>
                       </div>
                     </div>
+                  </div>
+                  
+                  <div className="bg-white rounded-lg shadow p-3">
+                    <h3 className="text-sm font-semibold text-slate-800 mb-2">材料費・技工費率推移</h3>
+                    <ResponsiveContainer width="100%" height={180}>
+                      <LineChart data={[
+                        { m: '1月', r1: 60, r2: 55 },
+                        { m: '2月', r1: 62, r2: 58 },
+                        { m: '3月', r1: 65, r2: 60 },
+                        { m: '4月', r1: 63, r2: 62 },
+                        { m: '5月', r1: 68, r2: 65 },
+                        { m: '6月', r1: 70, r2: 68 },
+                        { m: '7月', r1: 72, r2: 70 },
+                        { m: '8月', r1: 75, r2: 72 },
+                        { m: '9月', r1: 73, r2: 74 },
+                        { m: '10月', r1: 70, r2: 75 }
+                      ]}>
+                        <XAxis dataKey="m" tick={{ fontSize: 8 }} />
+                        <YAxis domain={[0, 100]} tick={{ fontSize: 8 }} />
+                        <Line type="monotone" dataKey="r1" stroke="#f59e0b" strokeWidth={2} name="材料費率" />
+                        <Line type="monotone" dataKey="r2" stroke="#ef4444" strokeWidth={2} name="技工費率" />
+                        <Legend wrapperStyle={{ fontSize: '9px' }} />
+                      </LineChart>
+                    </ResponsiveContainer>
                   </div>
                 </div>
               </div>
