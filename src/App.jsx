@@ -204,78 +204,168 @@ const DentalTaxDashboard = () => {
               
               
               {/* 今月の経営速報 */}
-              <div className="bg-white rounded-lg shadow p-4 min-h-[200px]">
-                <h3 className="text-sm font-semibold text-slate-700 mb-3">今月の経営速報（11月度速報値）</h3>
+              <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg shadow-lg p-4 min-h-[200px] border border-blue-100">
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="text-sm font-semibold text-slate-800">今月の経営速報</h3>
+                  <span className="text-xs bg-blue-600 text-white px-2 py-1 rounded-full">11月度速報値</span>
+                </div>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                  <div>
-                    <div className="text-xs text-slate-600 mb-2">売上</div>
-                    <div className="text-xs text-slate-500 mb-1">保険</div>
+                  <div className="bg-white rounded-lg p-3 shadow-sm border-l-4 border-blue-500">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-xs font-medium text-slate-600">売上</span>
+                      <TrendingUp className="w-4 h-4 text-green-500" />
+                    </div>
                     <div className="mb-2">
                       <EditableNumber
                         value={editMode ? tempData.currentMonth.revenue : data.currentMonth.revenue}
                         onChange={(v) => updateValue('currentMonth.revenue', v)}
                       />
                     </div>
-                    <div className="text-xs text-slate-500 mb-1">自費</div>
-                    <div className="text-base font-semibold mb-2">{formatCurrency(editMode ? tempData.currentMonth.insurance : data.currentMonth.insurance)}</div>
-                    <div className="flex items-center space-x-1 text-green-600 text-xs">
-                      <TrendingUp className="w-3 h-3" />
-                      <span>YoY比較</span>
+                    <div className="space-y-1">
+                      <div className="flex items-center justify-between text-xs">
+                        <span className="text-slate-500">保険診療</span>
+                        <span className="font-semibold text-slate-700">{formatCurrency((editMode ? tempData.currentMonth.revenue : data.currentMonth.revenue) - (editMode ? tempData.currentMonth.insurance : data.currentMonth.insurance))}</span>
+                      </div>
+                      <div className="flex items-center justify-between text-xs">
+                        <span className="text-slate-500">自費診療</span>
+                        <span className="font-semibold text-blue-600">{formatCurrency(editMode ? tempData.currentMonth.insurance : data.currentMonth.insurance)}</span>
+                      </div>
+                    </div>
+                    <div className="mt-2 pt-2 border-t border-slate-100">
+                      <div className="flex items-center space-x-1 text-green-600 text-xs">
+                        <TrendingUp className="w-3 h-3" />
+                        <span>前年比 +8.5%</span>
+                      </div>
                     </div>
                   </div>
-                  <div>
-                    <div className="text-xs text-slate-600 mb-2">経費</div>
+                  
+                  <div className="bg-white rounded-lg p-3 shadow-sm border-l-4 border-orange-500">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-xs font-medium text-slate-600">経費</span>
+                      <TrendingDown className="w-4 h-4 text-red-500" />
+                    </div>
                     <div className="mb-2">
                       <EditableNumber
                         value={editMode ? tempData.currentMonth.expenses : data.currentMonth.expenses}
                         onChange={(v) => updateValue('currentMonth.expenses', v)}
                       />
                     </div>
-                    <div className="text-xs text-slate-500 mb-1">材料費</div>
-                    <div className="text-base font-semibold mb-2">¥2,500,000</div>
-                    <div className="flex items-center space-x-1 text-red-600 text-xs">
-                      <TrendingDown className="w-3 h-3" />
-                      <span>YoY比較</span>
+                    <div className="space-y-1">
+                      <div className="flex items-center justify-between text-xs">
+                        <span className="text-slate-500">材料費</span>
+                        <span className="font-semibold text-slate-700">¥2,500,000</span>
+                      </div>
+                      <div className="flex items-center justify-between text-xs">
+                        <span className="text-slate-500">人件費</span>
+                        <span className="font-semibold text-slate-700">¥1,800,000</span>
+                      </div>
+                    </div>
+                    <div className="mt-2 pt-2 border-t border-slate-100">
+                      <div className="flex items-center space-x-1 text-red-600 text-xs">
+                        <TrendingDown className="w-3 h-3" />
+                        <span>前年比 +3.2%</span>
+                      </div>
                     </div>
                   </div>
-                  <div>
-                    <div className="text-xs text-slate-600 mb-2">営業利益</div>
+                  
+                  <div className="bg-white rounded-lg p-3 shadow-sm border-l-4 border-green-500">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-xs font-medium text-slate-600">営業利益</span>
+                      <TrendingUp className="w-4 h-4 text-green-500" />
+                    </div>
                     <div className="mb-2">
                       <EditableNumber
                         value={editMode ? tempData.currentMonth.profit : data.currentMonth.profit}
                         onChange={(v) => updateValue('currentMonth.profit', v)}
                       />
                     </div>
-                    <div className="h-8"></div>
-                    <div className="flex items-center space-x-1 text-green-600 text-xs mt-6">
-                      <TrendingUp className="w-3 h-3" />
-                      <span>YoY比較</span>
+                    <div className="space-y-1">
+                      <div className="flex items-center justify-between text-xs">
+                        <span className="text-slate-500">利益率</span>
+                        <span className="font-semibold text-green-600">
+                          {((editMode ? tempData.currentMonth.profit : data.currentMonth.profit) / (editMode ? tempData.currentMonth.revenue : data.currentMonth.revenue) * 100).toFixed(1)}%
+                        </span>
+                      </div>
+                      <div className="w-full bg-slate-100 rounded-full h-2 mt-1">
+                        <div 
+                          className="bg-gradient-to-r from-green-400 to-green-600 h-2 rounded-full" 
+                          style={{ width: `${((editMode ? tempData.currentMonth.profit : data.currentMonth.profit) / (editMode ? tempData.currentMonth.revenue : data.currentMonth.revenue) * 100)}%` }}
+                        ></div>
+                      </div>
+                    </div>
+                    <div className="mt-2 pt-2 border-t border-slate-100">
+                      <div className="flex items-center space-x-1 text-green-600 text-xs">
+                        <TrendingUp className="w-3 h-3" />
+                        <span>前年比 +22.8%</span>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
 
               {/* 納税見込み額 */}
-              <div className="bg-white rounded-lg shadow p-4 min-h-[200px]">
-                <h3 className="text-sm font-semibold text-slate-700 mb-3">納税見込み額（2025年度予測）</h3>
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                  <div>
-                    <div className="text-xs text-slate-600 mb-2">所得税</div>
-                    <div className="text-xl font-bold">{formatCurrency(editMode ? tempData.taxEstimate.income : data.taxEstimate.income)}</div>
+              <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-lg shadow-lg p-4 min-h-[200px] border border-purple-100">
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="text-sm font-semibold text-slate-800">納税見込み額</h3>
+                  <span className="text-xs bg-purple-600 text-white px-2 py-1 rounded-full">2025年度予測</span>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  <div className="bg-white rounded-lg p-3 shadow-sm">
+                    <div className="flex items-center space-x-2 mb-2">
+                      <div className="w-8 h-8 bg-gradient-to-br from-blue-400 to-blue-600 rounded-lg flex items-center justify-center">
+                        <DollarSign className="w-5 h-5 text-white" />
+                      </div>
+                      <div>
+                        <div className="text-xs text-slate-500">所得税</div>
+                        <div className="text-lg font-bold text-slate-800">{formatCurrency(editMode ? tempData.taxEstimate.income : data.taxEstimate.income)}</div>
+                      </div>
+                    </div>
+                    <div className="mt-2 pt-2 border-t border-slate-100">
+                      <div className="text-xs text-slate-500">税率: 約33%</div>
+                    </div>
                   </div>
-                  <div>
-                    <div className="text-xs text-slate-600 mb-2">消費税</div>
-                    <div className="text-xl font-bold">{formatCurrency(editMode ? tempData.taxEstimate.consumption : data.taxEstimate.consumption)}</div>
+                  <div className="bg-white rounded-lg p-3 shadow-sm">
+                    <div className="flex items-center space-x-2 mb-2">
+                      <div className="w-8 h-8 bg-gradient-to-br from-green-400 to-green-600 rounded-lg flex items-center justify-center">
+                        <DollarSign className="w-5 h-5 text-white" />
+                      </div>
+                      <div>
+                        <div className="text-xs text-slate-500">消費税</div>
+                        <div className="text-lg font-bold text-slate-800">{formatCurrency(editMode ? tempData.taxEstimate.consumption : data.taxEstimate.consumption)}</div>
+                      </div>
+                    </div>
+                    <div className="mt-2 pt-2 border-t border-slate-100">
+                      <div className="text-xs text-slate-500">税率: 10%</div>
+                    </div>
                   </div>
-                  <div>
-                    <div className="text-xs text-slate-600 mb-2">住民税</div>
-                    <div className="text-xl font-bold">{formatCurrency(editMode ? tempData.taxEstimate.resident : data.taxEstimate.resident)}</div>
+                  <div className="bg-white rounded-lg p-3 shadow-sm">
+                    <div className="flex items-center space-x-2 mb-2">
+                      <div className="w-8 h-8 bg-gradient-to-br from-orange-400 to-orange-600 rounded-lg flex items-center justify-center">
+                        <DollarSign className="w-5 h-5 text-white" />
+                      </div>
+                      <div>
+                        <div className="text-xs text-slate-500">住民税</div>
+                        <div className="text-lg font-bold text-slate-800">{formatCurrency(editMode ? tempData.taxEstimate.resident : data.taxEstimate.resident)}</div>
+                      </div>
+                    </div>
+                    <div className="mt-2 pt-2 border-t border-slate-100">
+                      <div className="text-xs text-slate-500">税率: 約10%</div>
+                    </div>
                   </div>
                 </div>
-                <div className="mt-4">
-                  <div className="text-xs text-slate-600 mb-1">納税資金準備状況：65%</div>
-                  <div className="w-full bg-slate-200 rounded-full h-2">
-                    <div className="bg-blue-500 h-2 rounded-full" style={{ width: '65%' }}></div>
+                <div className="mt-3 bg-white rounded-lg p-3 shadow-sm">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-xs font-semibold text-slate-700">納税資金準備状況</span>
+                    <span className="text-sm font-bold text-purple-600">65%</span>
+                  </div>
+                  <div className="w-full bg-slate-200 rounded-full h-3 overflow-hidden">
+                    <div className="h-full bg-gradient-to-r from-purple-400 via-purple-500 to-purple-600 rounded-full shadow-inner" style={{ width: '65%' }}>
+                      <div className="h-full bg-gradient-to-r from-white/20 to-transparent"></div>
+                    </div>
+                  </div>
+                  <div className="flex items-center justify-between mt-2 text-xs text-slate-500">
+                    <span>準備済: ¥3,900,000</span>
+                    <span>必要額: ¥6,000,000</span>
                   </div>
                 </div>
               </div>
